@@ -10,9 +10,19 @@ connectDB();
 // Middlewares
 app.use(express.json());
 
-// Routes de test
+// Route d'accueil
 app.get("/", (req, res) => {
     res.send("🚀 API Gamerz fonctionne !");
+});
+
+// Route pour tester la connexion MongoDB
+app.get("/test-db", async (req, res) => {
+    try {
+        res.status(200).send("✅ MongoDB est bien connecté !");
+    } catch (error) {
+        res.status(500).send({message: "❌ Erreur de connexion", error});
+        console.log(res);
+    }
 });
 
 // Démarrer le serveur
