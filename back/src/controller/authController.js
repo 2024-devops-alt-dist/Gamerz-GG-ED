@@ -29,14 +29,13 @@ exports.register = async (req, res) => {
     }
 };
 
-
 exports.login = async (req, res) => {
     try {
         const { email, password } = req.body;
         const user = await User.findOne({ email });
 
         if (!user || !await bcrypt.compare(password, user.password)) {
-            return res.status(200).json({ message: "Identifiants incorrects" });
+            return res.status(401).json({ message: "Identifiants incorrects" });
         }
 
         if (user.status === "pending") {
@@ -55,7 +54,6 @@ exports.login = async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 };
-
 
 exports.logout = (req, res) => {
     res.clearCookie('token').json({message: "Déconnexion réussie"});
@@ -83,8 +81,16 @@ exports.updateProfile = async (req, res) => {
         }
 
         const { username, email } = req.body;
+
+        if (email && email !== user.email) {
+            const existingUser = await User.findOne({ email });
+            if (existingUser) {
+                return res.status(400).json({ message: "Cet email est déjà utilisé" });
+            }
+            user.email = email;
+        }
+
         if (username) user.username = username;
-        if (email) user.email = email;
 
         await user.save();
         res.json({ message: "Profil mis à jour avec succès", user });
@@ -106,32 +112,39 @@ exports.changePassword = async (req, res) => {
             return res.status(400).json({ message: "Ancien mot de passe incorrect" });
         }
 
+        if (!newPassword || newPassword.length < 6) {
+            return res.status(400).json({ message: "Le nouveau mot de passe doit contenir au moins 6 caractères." });
+        }
+
         user.password = await bcrypt.hash(newPassword, 10);
         await user.save();
 
-        res.json({ message: "Mot de passe mis à jour avec succès" });
+        res.cookie('token', '', { httpOnly: true, maxAge: 0 });
+
+        res.json({ message: "Mot de passe mis à jour. Veuillez vous reconnecter." });
     } catch (error) {
         res.status(500).json({ message: "Erreur serveur", error: error.message });
     }
 };
 
-exports.refreshToken = (req, res) => {
+exports.refreshToken = async (req, res) => {
     const token = req.cookies.token;
 
-    console.log("🔹 Token reçu :", token);
-
     if (!token) {
-        return res.status(401).json({ message: 'Accès non autorisé' });
+        return res.status(401).json({ message: "Accès non autorisé" });
     }
 
     try {
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-        generateToken(res, { id: decoded.id, role: decoded.role });
+        const user = await User.findById(decoded.id);
+        if (!user) {
+            return res.status(404).json({ message: "Utilisateur non trouvé" });
+        }
 
+        generateToken(res, user);
         res.json({ message: "Token rafraîchi avec succès" });
     } catch (error) {
-        console.error("❌ Erreur lors du rafraîchissement du token :", error.message);
-        return res.status(403).json({ message: 'Token invalide ou expiré' });
+        return res.status(403).json({ message: "Token invalide ou expiré" });
     }
 };
