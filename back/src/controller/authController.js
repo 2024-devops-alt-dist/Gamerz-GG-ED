@@ -36,7 +36,7 @@ exports.login = async (req, res) => {
         const user = await User.findOne({ email });
 
         if (!user || !await bcrypt.compare(password, user.password)) {
-            return res.status(401).json({ message: "Identifiants incorrects" });
+            return res.status(200).json({ message: "Identifiants incorrects" });
         }
 
         if (user.status === "pending") {
@@ -66,7 +66,7 @@ exports.getUser = async (req, res) => {
         const user = await User.findById(req.user.id).select('-password');
 
         if (!user) {
-            return res.status(200).json({ message: "Utilisateur non trouvé" });
+            return res.status(404).json({ message: "Utilisateur non trouvé" });
         }
 
         res.status(200).json(user);
