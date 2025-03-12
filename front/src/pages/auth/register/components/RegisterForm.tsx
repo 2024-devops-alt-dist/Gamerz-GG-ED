@@ -19,11 +19,7 @@ import authService from "@/services/authService";
 import { Toaster, toast } from "sonner";
 import { useNavigate } from "react-router-dom";
 
-interface RegisterFormProps {
-  login?: boolean;
-}
-
-const RegisterForm = ({ login = true }: RegisterFormProps) => {
+const RegisterForm = () => {
   const navigate = useNavigate();
   const [authS] = useState(new authService());
   const form = useForm<z.infer<typeof schema.formSchema>>({
@@ -58,22 +54,20 @@ const RegisterForm = ({ login = true }: RegisterFormProps) => {
       <Toaster position="top-right" richColors />
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-          {!login && (
-            <FormField
-              control={form.control}
-              name="username"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Pseudo</FormLabel>
-                  <FormControl>
-                    <Input type="text" placeholder="Nom" {...field} />
-                  </FormControl>
-                  <FormDescription>Pseudo</FormDescription>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          )}
+          <FormField
+            control={form.control}
+            name="username"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Pseudo</FormLabel>
+                <FormControl>
+                  <Input type="text" placeholder="Nom" {...field} />
+                </FormControl>
+                <FormDescription>Choisissez un nom unique.</FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
           <FormField
             control={form.control}
             name="email"
@@ -83,27 +77,30 @@ const RegisterForm = ({ login = true }: RegisterFormProps) => {
                 <FormControl>
                   <Input type="text" placeholder="Email" {...field} />
                 </FormControl>
-                <FormDescription>Email</FormDescription>
+                <FormDescription>
+                  Entrez une adresse email valide.
+                </FormDescription>
                 <FormMessage />
               </FormItem>
             )}
           />
-          {!login && (
-            <FormField
-              control={form.control}
-              name="motivation"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Motivation</FormLabel>
-                  <FormControl>
-                    <Input type="text" placeholder="Motivation" {...field} />
-                  </FormControl>
-                  <FormDescription>Motivation</FormDescription>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          )}
+          <FormField
+            control={form.control}
+            name="motivation"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Motivation</FormLabel>
+                <FormControl>
+                  <Input type="text" placeholder="Motivation" {...field} />
+                </FormControl>
+                <FormDescription>
+                  Dites-nous en quelques mots pourquoi vous souhaitez rejoindre
+                  notre communauté.
+                </FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
           <FormField
             control={form.control}
             name="password"
@@ -113,29 +110,30 @@ const RegisterForm = ({ login = true }: RegisterFormProps) => {
                 <FormControl>
                   <PasswordField showPassword={false} {...field} />
                 </FormControl>
-                <FormDescription>Mot de passe</FormDescription>
+                <FormDescription>
+                  Créez un mot de passe sécurisé (au moins 11 caractères, avec
+                  majuscules, minuscules, caratère spécial et chiffres).
+                </FormDescription>
                 <FormMessage />
               </FormItem>
             )}
           />
-          {!login && (
-            <FormField
-              control={form.control}
-              name="checkPassword"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Confirmation du mot de passe</FormLabel>
-                  <FormControl>
-                    <PasswordField showPassword={false} {...field} />
-                  </FormControl>
-                  <FormDescription>
-                    Confirmation du mot de passe
-                  </FormDescription>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          )}
+          <FormField
+            control={form.control}
+            name="checkPassword"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Confirmation du mot de passe</FormLabel>
+                <FormControl>
+                  <PasswordField showPassword={false} {...field} />
+                </FormControl>
+                <FormDescription>
+                  Saisissez à nouveau votre mot de passe.
+                </FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
           <Button type="submit">Submit</Button>
         </form>
       </Form>
