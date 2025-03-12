@@ -1,7 +1,7 @@
 import userI from "@/interfaces/userI";
 import axios from "axios";
 
-class authService {
+class AuthService {
   private API_URL = `${import.meta.env.VITE_API_URL}`;
   async register(data: userI) {
     const resp = await axios.post(`${this.API_URL}register`, data, {
@@ -30,4 +30,4 @@ class authService {
     return resp.data;
   }
 }
-export default authService;
+export default AuthService;

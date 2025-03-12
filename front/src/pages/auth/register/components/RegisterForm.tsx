@@ -15,13 +15,13 @@ import { Input } from "@/components/ui/input";
 import PasswordField from "../../components/PasswordField";
 import schema from "../../utils/formSchema";
 import { useState } from "react";
-import authService from "@/services/authService";
+import AuthService from "@/services/AuthService";
 import { Toaster, toast } from "sonner";
 import { useNavigate } from "react-router-dom";
 
 const RegisterForm = () => {
   const navigate = useNavigate();
-  const [authS] = useState(new authService());
+  const [authService] = useState(new AuthService());
   const form = useForm<z.infer<typeof schema.formSchema>>({
     resolver: zodResolver(schema.formSchema),
     defaultValues: {
@@ -34,7 +34,7 @@ const RegisterForm = () => {
   });
 
   async function onSubmit(values: z.infer<typeof schema.formSchema>) {
-    const resp = await authS.register(values);
+    const resp = await authService.register(values);
     if (resp && resp.status === 201) {
       toast.success(
         resp.data.message +

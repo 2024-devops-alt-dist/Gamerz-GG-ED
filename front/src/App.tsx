@@ -1,12 +1,13 @@
 import { useState } from "react";
 import "./App.css";
-import authService from "./services/authService";
 import { AuthProvider } from "./context/AuthContext.tsx";
+import AuthService from "./services/AuthService.ts";
 function App() {
-  const [service] = useState(new authService());
+  const [authService] = useState(new AuthService());
+
   function getAllUsers() {
     try {
-      const resp = service.getAllUser();
+      const resp = authService.getAllUser();
       console.log(resp);
     } catch (error) {
       console.log(error);

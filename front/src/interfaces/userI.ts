@@ -1,7 +1,7 @@
 interface userI {
-  username: string;
+  username?: string;
   email: string;
-  motivation: string;
+  motivation?: string;
   password: string;
 }
 
