@@ -40,4 +40,29 @@ const formSchema = z
     path: ["checkPassword"],
   });
 
-export default formSchema;
+const formSchemaLogin = z.object({
+  email: z.string().email("Veuillez saisir un email valide"),
+  password: z
+    .string()
+    .min(11, {
+      message: "Le mot de passe doit contenir au minimum 11 caractères.",
+    })
+    .regex(
+      new RegExp("[A-Z]"),
+      "Le mot de passe doit contenir au moins une majuscule"
+    )
+    .regex(
+      new RegExp("[0-9]"),
+      "Le mot de passe doit contenir au moins un chiffre"
+    )
+    .regex(
+      new RegExp("[a-z]"),
+      "Le mot de passe doit contenir au moins une minuscule"
+    )
+    .regex(
+      new RegExp("[^a-zA-Z0-9 ]"),
+      "Le mot de passe doit contenir au moins un caractère spéciale"
+    ),
+});
+
+export default { formSchema, formSchemaLogin };
