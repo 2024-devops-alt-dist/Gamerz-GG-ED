@@ -28,7 +28,8 @@ const ensureCollectionsExist = async () => {
             email: "admin@example.com",
             password: "admin",
             role: "admin",
-            status: "approved"
+            status: "approved",
+            motivation: "je veux entrer",
         });
         console.log(" table User créé ");
     }
