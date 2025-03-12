@@ -14,14 +14,16 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import PasswordField from "../../components/PasswordField";
 import schema from "../../utils/formSchema";
-import { useState } from "react";
-import authService from "@/services/authService";
+import { useContext, useState } from "react";
 import { Toaster, toast } from "sonner";
 import { useNavigate } from "react-router-dom";
+import AuthService from "@/services/AuthService";
+import AuthContext from "@/context/AuthContext";
 
 const LoginForm = () => {
   const navigate = useNavigate();
-  const [authS] = useState(new authService());
+  const [authService] = useState(new AuthService());
+  const authContext = useContext(AuthContext);
   const form = useForm<z.infer<typeof schema.formSchemaLogin>>({
     resolver: zodResolver(schema.formSchemaLogin),
     defaultValues: {
@@ -32,12 +34,17 @@ const LoginForm = () => {
 
   async function onSubmit(values: z.infer<typeof schema.formSchemaLogin>) {
     try {
-      const resp = await authS.login(values);
+      if (authContext === undefined) return <p>Erreur contexte ...</p>;
+      const { setUser } = authContext;
+
+      const resp = await authService.login(values);
 
       if (resp && resp.status === 200) {
         toast.success(resp.data.message);
+
         setTimeout(() => {
           navigate("/");
+          setUser(resp.data.user);
         }, 2000);
       } else {
         toast.error("Une erreur est survenue");
