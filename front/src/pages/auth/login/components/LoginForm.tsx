@@ -64,7 +64,9 @@ const LoginForm = () => {
                 <FormControl>
                   <Input type="text" placeholder="Email" {...field} />
                 </FormControl>
-                <FormDescription>Email</FormDescription>
+                <FormDescription>
+                  Entrez l’adresse email associée à votre compte.
+                </FormDescription>
                 <FormMessage />
               </FormItem>
             )}
@@ -78,7 +80,9 @@ const LoginForm = () => {
                 <FormControl>
                   <PasswordField showPassword={false} {...field} />
                 </FormControl>
-                <FormDescription>Mot de passe</FormDescription>
+                <FormDescription>
+                  Saisissez votre mot de passe pour accéder à votre compte.
+                </FormDescription>
                 <FormMessage />
               </FormItem>
             )}
