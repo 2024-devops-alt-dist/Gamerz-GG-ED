@@ -4,16 +4,22 @@ import axios from "axios";
 class authService {
   private API_URL = `${import.meta.env.VITE_API_URL}`;
   async register(data: userI) {
-    const resp = await axios.post(`${this.API_URL}register`, data);
+    const resp = await axios.post(`${this.API_URL}register`, data, {
+      withCredentials: true,
+    });
     return resp;
   }
   async login(data: userI) {
-    const resp = await axios.post(`${this.API_URL}login`, data);
+    const resp = await axios.post(`${this.API_URL}login`, data, {
+      withCredentials: true,
+    });
     return resp;
   }
 
   async getAllUser() {
-    const resp = await axios.get(`${this.API_URL}admin/users`);
+    const resp = await axios.get(`${this.API_URL}admin/users`, {
+      withCredentials: true,
+    });
     return resp.data;
   }
 
