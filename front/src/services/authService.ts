@@ -15,7 +15,12 @@ class AuthService {
     });
     return resp;
   }
-
+  async logout(data: userI) {
+    const resp = await axios.post(`${this.API_URL}logout`, data, {
+      withCredentials: true,
+    });
+    return resp;
+  }
   async getAllUser() {
     const resp = await axios.get(`${this.API_URL}admin/users`, {
       withCredentials: true,
