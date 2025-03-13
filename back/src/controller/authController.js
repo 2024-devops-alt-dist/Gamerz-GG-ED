@@ -5,11 +5,20 @@ const generateToken = require('../utils/generateToken');
 
 exports.register = async (req, res) => {
     try {
-        const { username, email, password } = req.body;
+        const { username, email, password, motivation } = req.body;
 
-        const existingUser = await User.findOne({ email });
-        if (existingUser) {
+        if (!motivation || motivation.trim().length < 10) {
+            return res.status(400).json({ message: "Un message de motivation d'au moins 10 caractères est requis." });
+        }
+
+        const existingEmail = await User.findOne({ email });
+        if (existingEmail) {
             return res.status(400).json({ message: "Email déjà utilisé" });
+        }
+
+        const existingUsername = await User.findOne({ username });
+        if (existingUsername) {
+            return res.status(400).json({ message: "Nom d'utilisateur déjà pris" });
         }
 
         const hashedPassword = await bcrypt.hash(password, 10);
@@ -17,7 +26,8 @@ exports.register = async (req, res) => {
             username,
             email,
             password: hashedPassword,
-            status: "pending"
+            status: "pending",
+            motivation
         });
 
         res.status(201).json({
