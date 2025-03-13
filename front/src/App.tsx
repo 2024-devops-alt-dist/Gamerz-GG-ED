@@ -1,7 +1,7 @@
 import { useState } from "react";
 import "./App.css";
-import { AuthProvider } from "./context/AuthContext.tsx";
 import AuthService from "./services/AuthService.ts";
+import Logout from "./pages/auth/components/Logout.tsx";
 function App() {
   const [authService] = useState(new AuthService());
 
@@ -16,9 +16,8 @@ function App() {
   getAllUsers();
   return (
     <>
-      <AuthProvider>
-        <h1>Gamerz-GG-ED</h1>
-      </AuthProvider>
+      <h1>Gamerz-GG-ED</h1>
+      <Logout />
     </>
   );
 }

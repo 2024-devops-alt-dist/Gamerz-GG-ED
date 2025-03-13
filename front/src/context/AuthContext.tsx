@@ -11,7 +11,7 @@ interface AuthContextType {
   setUser: (user: userI | null) => void;
   loading: boolean;
 }
-const AuthContext = createContext<AuthContextType | undefined>(undefined);
+const AuthContext = createContext<AuthContextType | null>(null);
 
 export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [user, setUser] = useState<userI | null>(null);
