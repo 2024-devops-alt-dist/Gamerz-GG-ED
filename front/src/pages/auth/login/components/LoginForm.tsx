@@ -34,7 +34,7 @@ const LoginForm = () => {
 
   async function onSubmit(values: z.infer<typeof schema.formSchemaLogin>) {
     try {
-      if (authContext === undefined) return <p>Erreur contexte ...</p>;
+      if (authContext === null) return <p>Erreur contexte ...</p>;
       const { setUser } = authContext;
 
       const resp = await authService.login(values);
@@ -50,7 +50,6 @@ const LoginForm = () => {
         toast.error("Une erreur est survenue");
       }
     } catch (error) {
-      console.log(error.response);
       if (error.status === 403) {
         toast.error(error.response.data.message);
       }
