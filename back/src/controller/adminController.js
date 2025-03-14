@@ -1,5 +1,6 @@
 const User = require("../models/User");
 const bcrypt = require("bcryptjs");
+const { sendValidationEmail } = require("../utils/emailService");
 
 exports.validateUser = async (req, res) => {
   try {
@@ -14,8 +15,18 @@ exports.validateUser = async (req, res) => {
       return res.status(400).json({ message: "Statut invalide" });
     }
 
+    if (user.status === "approved") {
+      return res
+        .status(400)
+        .json({ message: "L'utilisateur est déjà approuvé" });
+    }
+
     user.status = status;
     await user.save();
+
+    if (status === "approved") {
+      await sendValidationEmail(user.email, user.username);
+    }
 
     res.json({ message: `Utilisateur ${status} avec succès` });
   } catch (error) {
@@ -68,16 +79,36 @@ exports.createAdmin = async (req, res) => {
       return res.status(400).json({ message: "Un administrateur existe déjà" });
     }
 
-    const hashedPassword = await bcrypt.hash("Admin123!!!", 10);
+    const hashedPassword = await bcrypt.hash("admin", 10);
     const admin = await User.create({
       username: "admin",
       email: "admin@example.com",
       password: hashedPassword,
       role: "admin",
       status: "approved",
+      motivation: "test",
     });
 
     res.status(201).json({ message: "Administrateur créé avec succès", admin });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+exports.getAllUsersPendingStatus = async (req, res) => {
+  try {
+    const pendingUsers = await User.find(
+      { status: "pending" },
+      "id username email motivation createdAt"
+    );
+
+    if (pendingUsers.length === 0) {
+      return res
+        .status(404)
+        .json({ message: "Aucun utilisateur en attente de validation." });
+    }
+
+    res.status(200).json(pendingUsers);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
