@@ -3,6 +3,7 @@ interface userI {
   email: string;
   motivation?: string;
   password: string;
+  role?: string;
 }
 
 export default userI;

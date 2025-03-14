@@ -5,6 +5,9 @@ import Register from "@/pages/auth/register/Register";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import PublicRoute from "./utils/PublicRoute";
 import PrivateRoute from "./utils/PrivateRoute";
+import Dashboard from "@/pages/admin/components/Dashboard";
+import Admin from "@/pages/admin/Admin";
+import ProtectAdminRoute from "./utils/ProtectAdminRoute";
 
 function MainRouter() {
   return (
@@ -14,6 +17,11 @@ function MainRouter() {
           {/* 🔹 Route protégée */}
           <Route element={<PrivateRoute />}>
             <Route path="/" element={<App />} />
+            <Route element={<ProtectAdminRoute />}>
+              <Route path="/admin" element={<Admin />}>
+                <Route path="dashboard" element={<Dashboard />} />
+              </Route>
+            </Route>
           </Route>
 
           {/* 🔹 Routes publiques (login, register) */}
