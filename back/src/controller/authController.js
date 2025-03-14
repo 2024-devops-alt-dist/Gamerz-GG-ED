@@ -2,6 +2,7 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 const generateToken = require('../utils/generateToken');
+const { validatePassword } = require("../utils/passwordValidator");
 
 exports.register = async (req, res) => {
     try {
@@ -9,6 +10,12 @@ exports.register = async (req, res) => {
 
         if (!motivation || motivation.trim().length < 10) {
             return res.status(400).json({ message: "Un message de motivation d'au moins 10 caractères est requis." });
+        }
+
+        if (!validatePassword(password)) {
+            return res.status(400).json({
+                message: "Le mot de passe doit contenir au moins 11 caractères, une majuscule, une minuscule, un chiffre et un caractère spécial."
+            });
         }
 
         const existingEmail = await User.findOne({ email });
