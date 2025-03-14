@@ -1,7 +1,7 @@
 import { useState } from "react";
 import "./App.css";
-import AuthService from "./services/AuthService.ts";
 import Logout from "./pages/auth/components/Logout.tsx";
+import AuthService from "./services/AuthService.ts";
 function App() {
   const [authService] = useState(new AuthService());
 
