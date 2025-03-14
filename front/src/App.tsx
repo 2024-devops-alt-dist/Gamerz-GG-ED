@@ -1,7 +1,7 @@
 import { useState } from "react";
 import "./App.css";
-import Logout from "./pages/auth/components/Logout.tsx";
-import AuthService from "./services/AuthService.ts";
+import HomePage from "@/pages/home/Home.tsx";
+import AuthService from "@/services/authService.ts";
 function App() {
   const [authService] = useState(new AuthService());
 
@@ -15,10 +15,7 @@ function App() {
   }
   getAllUsers();
   return (
-    <>
-      <h1>Gamerz-GG-ED</h1>
-      <Logout />
-    </>
+      <HomePage></HomePage>
   );
 }
 

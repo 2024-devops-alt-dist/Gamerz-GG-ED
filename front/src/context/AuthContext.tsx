@@ -1,5 +1,5 @@
 import userI from "@/interfaces/userI";
-import AuthService from "@/services/AuthService";
+import AuthService from "@/services/authService";
 import { createContext, ReactNode, useEffect, useState } from "react";
 
 interface AuthProviderProps {
