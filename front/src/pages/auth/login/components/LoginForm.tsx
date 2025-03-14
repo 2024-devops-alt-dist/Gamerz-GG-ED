@@ -10,6 +10,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import PasswordField from "../../components/PasswordField";
@@ -19,6 +20,7 @@ import { Toaster, toast } from "sonner";
 import { useNavigate } from "react-router-dom";
 import AuthService from "@/services/AuthService";
 import AuthContext from "@/context/AuthContext";
+import { Card, CardHeader, CardTitle } from "@/components/ui/card";
 
 const LoginForm = () => {
   const navigate = useNavigate();
@@ -45,7 +47,7 @@ const LoginForm = () => {
         setTimeout(() => {
           navigate("/");
           setUser(resp.data.user);
-        }, 2000);
+        }, 1000);
       } else {
         toast.error("Une erreur est survenue");
       }
@@ -59,43 +61,50 @@ const LoginForm = () => {
   return (
     <div>
       <Toaster position="top-right" richColors />
-      <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-          <FormField
-            control={form.control}
-            name="email"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Email</FormLabel>
-                <FormControl>
-                  <Input type="text" placeholder="Email" {...field} />
-                </FormControl>
-                <FormDescription>
-                  Entrez l’adresse email associée à votre compte.
-                </FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="password"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Mot de passe</FormLabel>
-                <FormControl>
-                  <PasswordField showPassword={false} {...field} />
-                </FormControl>
-                <FormDescription>
-                  Saisissez votre mot de passe pour accéder à votre compte.
-                </FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <Button type="submit">Submit</Button>
-        </form>
-      </Form>
+      <Card className="p-10">
+        <CardHeader>
+          <CardTitle className="text-2*1">Connexion</CardTitle>
+        </CardHeader>
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+            <FormField
+              control={form.control}
+              name="email"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Email</FormLabel>
+                  <FormControl>
+                    <Input type="text" placeholder="Email" {...field} />
+                  </FormControl>
+                  <FormDescription>
+                    Entrez l’adresse email associée à votre compte.
+                  </FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="password"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Mot de passe</FormLabel>
+                  <FormControl>
+                    <PasswordField showPassword={false} {...field} />
+                  </FormControl>
+                  <FormDescription>
+                    Saisissez votre mot de passe pour accéder à votre compte.
+                  </FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <Button className="w-full" type="submit">
+              Submit
+            </Button>
+          </form>
+        </Form>
+      </Card>
     </div>
   );
 };
