@@ -5,6 +5,8 @@ const cors = require("cors");
 
 const authRoutes = require("./routes/authRoutes");
 const adminRoutes = require("./routes/adminRoutes");
+const roomRoutes = require("./routes/roomRoutes");
+const messageRoutes = require("./routes/messageRoutes");
 
 const PORT_FRONT = process.env.PORT_FRONT;
 
@@ -23,6 +25,8 @@ app.use(cookieParser());
 // Routes
 app.use("/api", authRoutes);
 app.use("/api/admin", adminRoutes);
+app.use("/api/rooms", roomRoutes);
+app.use("/api/messages", messageRoutes);
 
 app.get("/test-db", async (req, res) => {
     res.status(200).send("✅ MongoDB est bien connecté !");
