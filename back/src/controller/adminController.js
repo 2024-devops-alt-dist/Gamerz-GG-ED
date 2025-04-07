@@ -79,7 +79,7 @@ exports.createAdmin = async (req, res) => {
       return res.status(400).json({ message: "Un administrateur existe déjà" });
     }
 
-    const hashedPassword = await bcrypt.hash("admin", 10);
+    const hashedPassword = await bcrypt.hash("Admin123!!!", 10);
     const admin = await User.create({
       username: "admin",
       email: "admin@example.com",
