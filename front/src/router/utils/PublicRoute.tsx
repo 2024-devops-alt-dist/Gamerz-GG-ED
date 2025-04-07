@@ -4,6 +4,7 @@ import { Navigate, Outlet } from "react-router-dom";
 
 const PublicRoute = () => {
   const authContext = useContext(AuthContext);
+  console.log(authContext);
 
   if (authContext === null) return <p>Erreur contexte ...</p>;
   const { user, loading } = authContext;
@@ -12,7 +13,11 @@ const PublicRoute = () => {
     return <p>Chargement...</p>; // Attendre avant de rediriger
   }
 
-  return user ? <Navigate to="/" replace /> : <Outlet />;
+  return user && user.role !== "admin" ? (
+    <Navigate to="/" replace />
+  ) : (
+    <Outlet />
+  );
 };
 
 export default PublicRoute;
