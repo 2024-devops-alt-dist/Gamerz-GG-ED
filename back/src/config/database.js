@@ -24,10 +24,10 @@ const ensureCollectionsExist = async () => {
     let adminUser = await User.findOne();
     if (!adminUser) {
         adminUser = await User.create({
-            username: "admin",
-            email: "admin@example.com",
-            password: "admin",
-            role: "admin",
+            username: "test",
+            email: "test@test.com",
+            password: "test123!!!",
+            role: "user",
             status: "approved",
             motivation: "je veux entrer",
         });
