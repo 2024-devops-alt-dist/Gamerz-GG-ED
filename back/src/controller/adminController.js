@@ -12,7 +12,7 @@ exports.validateUser = async (req, res) => {
       return res.status(404).json({ message: "Utilisateur non trouvé" });
     }
 
-    if (users.length > 1) {
+    if (users.length > 0) {
       for (const user of users) {
         if (user.status === "approved") continue;
 
