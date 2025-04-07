@@ -1,8 +1,9 @@
 import * as React from "react";
-import { GalleryVerticalEnd } from "lucide-react";
+import {GalleryVerticalEnd} from "lucide-react";
 import {
   Sidebar,
   SidebarContent,
+  SidebarFooter,
   SidebarGroup,
   SidebarHeader,
   SidebarMenu,
@@ -15,6 +16,7 @@ import {
 } from "@/components/ui/sidebar";
 import ListUser from "./listUser/ListUser";
 import ListUserPending from "./listUser/ListUserPending";
+import {NavUser} from "@/pages/home/component/NavUser.tsx";
 
 const data = {
   navMain: [
@@ -89,6 +91,9 @@ const AppSidebar = ({ onSelectComponent, ...props }: AppSidebarProps) => {
           </SidebarMenu>
         </SidebarGroup>
       </SidebarContent>
+      <SidebarFooter>
+        <NavUser/>
+      </SidebarFooter>
       <SidebarRail />
     </Sidebar>
   );
