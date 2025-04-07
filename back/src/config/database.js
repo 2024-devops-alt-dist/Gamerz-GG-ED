@@ -3,16 +3,15 @@ const mongoose = require("mongoose");
 const MONGO_URI = process.env.MONGO_URI || "mongodb://127.0.0.1:27017/gamerz";
 
 const connectDB = async () => {
-    try {
-        await mongoose.connect(MONGO_URI);
-        console.log("✅ MongoDB connecté !");
+  try {
+    await mongoose.connect(MONGO_URI);
+    console.log("✅ MongoDB connecté !");
 
-        await ensureCollectionsExist();
-
-    } catch (error) {
-        console.error("❌ Erreur de connexion à MongoDB :", error);
-        process.exit(1);
-    }
+    await ensureCollectionsExist();
+  } catch (error) {
+    console.error("❌ Erreur de connexion à MongoDB :", error);
+    process.exit(1);
+  }
 };
 
 const ensureCollectionsExist = async () => {
@@ -54,7 +53,5 @@ const ensureCollectionsExist = async () => {
         });
         console.log("table messages créée ");
     }
-};
-
 
 module.exports = connectDB;
