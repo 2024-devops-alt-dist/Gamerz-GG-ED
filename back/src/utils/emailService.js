@@ -4,6 +4,7 @@ const nodemailer = require('nodemailer');
 const emailTransporter = nodemailer.createTransport({
     host: process.env.EMAIL_HOST,
     port: process.env.EMAIL_PORT,
+    secure: false,
     auth: {
         user: process.env.EMAIL_USER,
         pass: process.env.EMAIL_PASS
@@ -34,7 +35,7 @@ exports.sendValidationEmail = async (email, username) => {
                 À très vite,  
                 L’équipe Gamerz ⚡👾  
                 
-                PS : 🐱 La Bise au Chat (et aux gamers !) 🎮🐾`,
+                PS : 🐱 La Bise au Chat (et aux losers !) 🎮🐾`,
             html: `
                 <div style="font-family: Arial, sans-serif; background-color: #1e1e1e; color: #ffffff; padding: 20px; text-align: center;">
                 <div style="max-width: 600px; margin: auto; background-color: #2a2a2a; padding: 20px; border-radius: 10px; box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);">

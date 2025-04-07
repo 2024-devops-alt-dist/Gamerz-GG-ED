@@ -53,5 +53,5 @@ const ensureCollectionsExist = async () => {
         });
         console.log("table messages créée ");
     }
-
+}
 module.exports = connectDB;
