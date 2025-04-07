@@ -3,6 +3,7 @@ const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 const generateToken = require('../utils/generateToken');
 const { validatePassword } = require("../utils/passwordValidator");
+const {sendAdminNotificationOnRegister} = require("../utils/emailService");
 
 exports.register = async (req, res) => {
     try {
@@ -36,6 +37,8 @@ exports.register = async (req, res) => {
             status: "pending",
             motivation
         });
+
+        await sendAdminNotificationOnRegister(email, username);
 
         res.status(201).json({
             message: "Inscription réussie, en attente de validation",
