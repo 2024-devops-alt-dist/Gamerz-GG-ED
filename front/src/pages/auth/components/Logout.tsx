@@ -1,10 +1,8 @@
-import { UserRoundCheck } from "lucide-react";
-
 import { Button } from "@/components/ui/button";
 import { useContext, useState } from "react";
-import AuthService from "@/services/AuthService";
 import AuthContext from "@/context/AuthContext";
 import { useNavigate } from "react-router-dom";
+import AuthService from "@/services/authService";
 
 const Logout = () => {
   const [authService] = useState(new AuthService());
@@ -33,7 +31,7 @@ const Logout = () => {
 
   return (
     <Button variant={"ghost"} onClick={logoutUser}>
-      <UserRoundCheck /> Déconnexion
+      Déconnexion
     </Button>
   );
 };
