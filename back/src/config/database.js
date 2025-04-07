@@ -8,7 +8,6 @@ const connectDB = async () => {
         console.log("✅ MongoDB connecté !");
 
         await ensureCollectionsExist();
-
     } catch (error) {
         console.error("❌ Erreur de connexion à MongoDB :", error);
         process.exit(1);
@@ -24,10 +23,10 @@ const ensureCollectionsExist = async () => {
     let adminUser = await User.findOne();
     if (!adminUser) {
         adminUser = await User.create({
-            username: "admin",
-            email: "admin@example.com",
-            password: "admin",
-            role: "admin",
+            username: "test",
+            email: "test@test.com",
+            password: "test123!!!",
+            role: "user",
             status: "approved",
             motivation: "je veux entrer",
         });
@@ -54,7 +53,6 @@ const ensureCollectionsExist = async () => {
         });
         console.log("table messages créée ");
     }
-};
-
+}
 
 module.exports = connectDB;
