@@ -21,12 +21,6 @@ class AuthService {
     });
     return resp;
   }
-  async getAllUser() {
-    const resp = await axios.get(`${this.API_URL}admin/users`, {
-      withCredentials: true,
-    });
-    return resp.data;
-  }
 
   async getUserConnect() {
     const resp = await axios.get(`${this.API_URL}me`, {

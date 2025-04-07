@@ -97,10 +97,7 @@ exports.createAdmin = async (req, res) => {
 
 exports.getAllUsersPendingStatus = async (req, res) => {
   try {
-    const pendingUsers = await User.find(
-      { status: "pending" },
-      "id username email motivation createdAt"
-    );
+    const pendingUsers = await User.find({ status: "pending" });
 
     if (pendingUsers.length === 0) {
       return res
