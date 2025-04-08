@@ -27,6 +27,7 @@ function ListUserPending() {
     <div className="container mx-auto py-10">
       {error}
       <DataTableUsers
+        type={"pending"}
         refreash={getAllUsers}
         columns={columns()}
         data={
