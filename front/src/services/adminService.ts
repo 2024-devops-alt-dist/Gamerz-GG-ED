@@ -11,6 +11,15 @@ class AdminService {
     );
     return resp;
   }
+
+  async banned(ids: string[]) {
+    const resp = await axios.put(
+      `${this.API_URL}ban`,
+      { ids },
+      { withCredentials: true }
+    );
+    return resp;
+  }
 }
 
 export default AdminService;

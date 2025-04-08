@@ -16,6 +16,7 @@ import {
 import { useState } from "react";
 import AdminService from "@/services/adminService";
 import { Button } from "@/components/ui/button";
+import DialogBanned from "../DialogBanned";
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
@@ -52,7 +53,7 @@ const DataTableUsers = <TData, TValue>({
     },
   });
 
-  const onSubmit = () => {
+  const onValidate = () => {
     const tableRows = table.getRowModel().rows;
 
     const selectedUsers = tableRows
@@ -60,6 +61,8 @@ const DataTableUsers = <TData, TValue>({
       .map((row) => row.original);
 
     const ids = selectedUsers.map((user) => user._id);
+    console.log(ids);
+
     if (ids.length === 0) return;
     try {
       adminService.validate(ids).then(() => {
@@ -69,6 +72,18 @@ const DataTableUsers = <TData, TValue>({
     } catch (error) {
       console.log(error);
     }
+  };
+  const onBanned = () => {
+    const tableRows = table.getRowModel().rows;
+
+    const selectedUsers = tableRows
+      .filter((row) => banedSelections[row.id])
+      .map((row) => row.original);
+
+    const ids = selectedUsers.map((user) => user);
+    if (ids.length === 0) return;
+
+    return ids;
   };
 
   return (
@@ -125,14 +140,18 @@ const DataTableUsers = <TData, TValue>({
       </div>
       <div className="flex justify-end mt-4">
         {Object.keys(statusSelections).length > 0 && (
-          <Button disabled={data.length <= 0} onClick={onSubmit}>
+          <Button disabled={data.length <= 0} onClick={onValidate}>
             Approuver
           </Button>
         )}
         {Object.keys(banedSelections).length > 0 && (
-          <Button disabled={data.length <= 0} onClick={onSubmit}>
-            Banissement
-          </Button>
+          // <Button disabled={data.length <= 0} onClick={onBanned}>
+          // </Button>
+          <DialogBanned
+            setBanedSelections={setBanedSelections}
+            refreash={refreash}
+            users={onBanned()}
+          />
         )}
       </div>
     </div>
