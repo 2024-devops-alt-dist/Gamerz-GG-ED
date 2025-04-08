@@ -52,7 +52,8 @@ exports.banUser = async (req, res) => {
 
 exports.deleteUser = async (req, res) => {
   try {
-    const user = await User.findByIdAndDelete(req.params.id);
+    const { ids } = req.body;
+    const user = await User.deleteMany({ _id: { $in: ids } });
     if (!user) {
       return res.status(404).json({ message: "Utilisateur non trouvé" });
     }
