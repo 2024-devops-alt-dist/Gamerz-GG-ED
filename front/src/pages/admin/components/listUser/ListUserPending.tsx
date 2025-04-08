@@ -27,8 +27,14 @@ function ListUserPending() {
     <div className="container mx-auto py-10">
       {error}
       <DataTableUsers
+        type={"pending"}
+        refreash={getAllUsers}
         columns={columns()}
-        data={users ? users.filter((user) => user.status === "pending") : []}
+        data={
+          users?.length && users.length > 0
+            ? users.filter((user) => user.status === "pending")
+            : []
+        }
       />
     </div>
   );

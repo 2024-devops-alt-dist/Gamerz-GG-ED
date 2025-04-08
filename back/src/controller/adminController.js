@@ -97,8 +97,11 @@ exports.getAllUsersPendingStatus = async (req, res) => {
 
     if (pendingUsers.length === 0) {
       return res
-        .status(404)
-        .json({ message: "Aucun utilisateur en attente de validation." });
+        .status(200)
+        .json({
+          message: "Aucun utilisateur en attente de validation.",
+          users: pendingUsers,
+        });
     }
 
     res.status(200).json(pendingUsers);
