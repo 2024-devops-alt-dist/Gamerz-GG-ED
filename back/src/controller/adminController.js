@@ -18,7 +18,7 @@ exports.validateUser = async (req, res) => {
 
         user.status = "approved";
         await user.save();
-        await sendValidationEmail(user.email, user.username);
+        sendValidationEmail(user.email, user.username);
       }
     }
 
