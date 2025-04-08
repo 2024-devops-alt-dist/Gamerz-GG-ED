@@ -11,12 +11,19 @@ type columnsProps = {
   setBanedSelections: React.Dispatch<
     React.SetStateAction<Record<string, boolean>>
   >;
+
+  deleteSelections: Record<string, boolean>;
+  setDeleteSelections: React.Dispatch<
+    React.SetStateAction<Record<string, boolean>>
+  >;
 };
 export const columns = ({
   statusSelections,
   setStatusSelections,
   banedSelections,
   setBanedSelections,
+  deleteSelections,
+  setDeleteSelections,
 }: columnsProps): ColumnDef<userI>[] => {
   return [
     {
@@ -98,6 +105,42 @@ export const columns = ({
               checked={!!banedSelections[row.id]}
               onCheckedChange={(value) => {
                 getSelectValue(setBanedSelections, value, row);
+              }}
+              aria-label="Select row"
+            />
+          </div>
+        );
+      },
+    },
+    {
+      accessorKey: "delete",
+      id: "delete",
+      header: ({ table }) => {
+        const deleteRows = table.getRowModel().rows.map((row) => row);
+        const isChecked = getSelectValues(deleteSelections, deleteRows);
+
+        return (
+          <div className="flex gap-2">
+            <h4>Suppression</h4>
+            <Checkbox
+              checked={isChecked}
+              onCheckedChange={(value) => {
+                deleteRows.forEach((row) => {
+                  getSelectValue(setDeleteSelections, value, row);
+                });
+              }}
+              aria-label="Select all"
+            />
+          </div>
+        );
+      },
+      cell: ({ row }) => {
+        return (
+          <div className="flex gap-2">
+            <Checkbox
+              checked={!!deleteSelections[row.id]}
+              onCheckedChange={(value) => {
+                getSelectValue(setDeleteSelections, value, row);
               }}
               aria-label="Select row"
             />

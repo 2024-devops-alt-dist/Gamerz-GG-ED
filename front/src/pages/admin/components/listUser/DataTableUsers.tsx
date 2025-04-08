@@ -29,6 +29,10 @@ interface DataTableProps<TData, TValue> {
     React.SetStateAction<Record<string, boolean>>
   >;
   banedSelections: Record<string, boolean>;
+  deleteSelections: Record<string, boolean>;
+  setDeleteSelections: React.Dispatch<
+    React.SetStateAction<Record<string, boolean>>
+  >;
 }
 const DataTableUsers = <TData, TValue>({
   data,
@@ -38,6 +42,8 @@ const DataTableUsers = <TData, TValue>({
   setStatusSelections,
   banedSelections,
   setBanedSelections,
+  deleteSelections,
+  setDeleteSelections,
 }: DataTableProps<TData, TValue>) => {
   const [adminService] = useState(new AdminService());
 
@@ -50,6 +56,8 @@ const DataTableUsers = <TData, TValue>({
       setStatusSelections,
       banedSelections,
       setBanedSelections,
+      deleteSelections,
+      setDeleteSelections,
     },
   });
 
@@ -85,7 +93,18 @@ const DataTableUsers = <TData, TValue>({
 
     return ids;
   };
+  const onDelete = () => {
+    const tableRows = table.getRowModel().rows;
 
+    const selectedUsers = tableRows
+      .filter((row) => banedSelections[row.id])
+      .map((row) => row.original);
+
+    const ids = selectedUsers.map((user) => user);
+    if (ids.length === 0) return;
+
+    return ids;
+  };
   return (
     <div>
       <div className="rounded-md border">
@@ -145,13 +164,14 @@ const DataTableUsers = <TData, TValue>({
           </Button>
         )}
         {Object.keys(banedSelections).length > 0 && (
-          // <Button disabled={data.length <= 0} onClick={onBanned}>
-          // </Button>
           <DialogBanned
             setBanedSelections={setBanedSelections}
             refreash={refreash}
             users={onBanned()}
           />
+        )}
+        {Object.keys(deleteSelections).length > 0 && (
+          <Button onClick={onDelete}>Supprimer</Button>
         )}
       </div>
     </div>

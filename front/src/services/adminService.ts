@@ -20,6 +20,11 @@ class AdminService {
     );
     return resp;
   }
+
+  async deleteByIds(ids: string[]) {
+    const resp = await axios.delete(`${this.API_URL}delete`, { data: { ids } });
+    return resp;
+  }
 }
 
 export default AdminService;

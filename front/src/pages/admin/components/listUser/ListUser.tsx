@@ -13,10 +13,12 @@ function ListUser({ type }: ListUserProps) {
   const [userService] = useState(new UserService());
   const [users, setUsers] = useState<userI[] | null>([]);
   const [usersPending, setUsersPending] = useState<userI[] | null>([]);
+  const [deleteSelections, setDeleteSelections] = useState({});
   const [statusSelections, setStatusSelections] = useState({});
   const [banedSelections, setBanedSelections] = useState<
     Record<string, boolean>
   >({});
+
   async function getAllUsers() {
     try {
       const resp = await userService.getAll();
@@ -46,10 +48,14 @@ function ListUser({ type }: ListUserProps) {
     setStatusSelections,
     banedSelections,
     setBanedSelections,
+    deleteSelections,
+    setDeleteSelections,
   });
   return (
     <div className="container mx-auto py-10">
       <DataTableUsers
+        setDeleteSelections={setDeleteSelections}
+        deleteSelections={deleteSelections}
         setBanedSelections={setBanedSelections}
         banedSelections={banedSelections}
         statusSelections={statusSelections}
