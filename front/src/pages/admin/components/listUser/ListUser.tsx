@@ -11,8 +11,8 @@ function ListUser() {
   async function getAllUsers() {
     try {
       const resp = await userService.getAll();
-      console.log(resp);
-      setUsers(resp);
+      const usersApproved = resp?.filter((user) => user.status === "approved");
+      if (usersApproved) setUsers(usersApproved);
     } catch (error) {
       console.log(error);
     }
@@ -23,7 +23,12 @@ function ListUser() {
 
   return (
     <div className="container mx-auto py-10">
-      <DataTableUsers columns={columns()} data={users ? users : []} />
+      <DataTableUsers
+        type={"approved"}
+        refreash={getAllUsers}
+        columns={columns()}
+        data={users ? users : []}
+      />
     </div>
   );
 }

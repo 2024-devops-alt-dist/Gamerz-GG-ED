@@ -77,3 +77,53 @@ exports.sendValidationEmail = async (email, username) => {
         console.error("❌ Erreur lors de l'envoi de l'email :", error);
     }
 };
+
+exports.sendAdminNotificationOnRegister = async (userEmail, username) => {
+    try {
+        const mailOptions = {
+            from: `"Gamerz Alert" <no-reply@gamerz.com>`,
+            to: "admin@gamerz.com",
+            subject: `🆕 Nouvel utilisateur en attente : ${username}`,
+            text: `Un nouvel utilisateur s'est inscrit sur Gamerz !
+
+Nom d'utilisateur : ${username}
+Email : ${userEmail}
+
+Connecte-toi pour le valider.`,
+            html: `
+                <div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #0f0f0f; color: #ffffff; padding: 30px;">
+                    <div style="max-width: 600px; margin: auto; background-color: #1a1a1a; border-radius: 12px; padding: 25px; box-shadow: 0 0 20px #ff6600;">
+                        <h1 style="color: #ff6600; text-align: center; font-size: 28px;">⚠️ ALERTE GAMING MAXIMALE ⚠️</h1>
+                        <h2 style="color: #00ffff; text-align: center; font-size: 22px;">Un nouveau challenger approche ! 🎮</h2>
+                        
+                        <div style="margin-top: 20px; padding: 15px; background-color: #262626; border-radius: 8px;">
+                            <p style="font-size: 16px;"><strong>👤 Nom d'utilisateur :</strong> <span style="color: #ffcc00;">${username}</span></p>
+                            <p style="font-size: 16px;"><strong>📧 Email :</strong> <span style="color: #ffcc00;">${userEmail}</span></p>
+                        </div>
+
+                        <div style="margin-top: 20px;">
+                            <p style="font-size: 16px; line-height: 1.6;">
+                                Ce gamer légendaire vient tout juste de s’inscrire sur <strong>Gamerz</strong> et attend d’être <span style="color: #00ff00;">validé par l’élite administrative</span> 🛡️
+                            </p>
+                            <p style="font-size: 16px; line-height: 1.6;">
+                                Prépare les confettis, les emotes, et un bon vieux GG pour accueillir ce nouveau joueur dans la team 🔥
+                            </p>
+                        </div>
+
+                        <hr style="margin: 30px 0; border: none; border-top: 1px solid #333;" />
+
+                        <p style="text-align: center; font-size: 14px; color: #888;">🎯 Mission : Aller dans l’admin, checker le compte, et décider du destin de ${username}.</p>
+                        <p style="text-align: center; font-size: 12px; color: #555; margin-top: 10px;">Gamerz HQ © - Powered by passion and pixel dust</p>
+                    </div>
+                </div>
+            `
+        };
+
+        await emailTransporter.sendMail(mailOptions);
+        console.log(`📧 Alerte admin envoyée pour ${userEmail}`);
+    } catch (error) {
+        console.error("❌ Erreur lors de l'envoi de l'alerte admin :", error);
+    }
+};
+
+

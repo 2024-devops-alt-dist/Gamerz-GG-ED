@@ -4,31 +4,27 @@ const { sendValidationEmail } = require("../utils/emailService");
 
 exports.validateUser = async (req, res) => {
   try {
-    const { status } = req.body;
-    const user = await User.findById(req.params.id);
+    const { ids } = req.body;
 
-    if (!user) {
+    const users = await User.find({ _id: { $in: ids } });
+
+    if (!users || users.length === 0) {
       return res.status(404).json({ message: "Utilisateur non trouvé" });
     }
 
-    if (status !== "approved" && status !== "rejected") {
-      return res.status(400).json({ message: "Statut invalide" });
+    if (users.length > 0) {
+      for (const user of users) {
+        if (user.status === "approved") continue;
+
+        user.status = "approved";
+        await user.save();
+        await sendValidationEmail(user.email, user.username);
+      }
     }
 
-    if (user.status === "approved") {
-      return res
-        .status(400)
-        .json({ message: "L'utilisateur est déjà approuvé" });
-    }
-
-    user.status = status;
-    await user.save();
-
-    if (status === "approved") {
-      await sendValidationEmail(user.email, user.username);
-    }
-
-    res.json({ message: `Utilisateur ${status} avec succès` });
+    res.json({
+      message: `Utilisateur approuvé avec succès`,
+    });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -101,8 +97,11 @@ exports.getAllUsersPendingStatus = async (req, res) => {
 
     if (pendingUsers.length === 0) {
       return res
-        .status(404)
-        .json({ message: "Aucun utilisateur en attente de validation." });
+        .status(200)
+        .json({
+          message: "Aucun utilisateur en attente de validation.",
+          users: pendingUsers,
+        });
     }
 
     res.status(200).json(pendingUsers);
