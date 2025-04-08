@@ -13,7 +13,7 @@ const {
 const router = express.Router();
 
 router.put("/validate", authMiddleware, roleMiddleware, validateUser);
-router.put("/ban/:id", authMiddleware, roleMiddleware, banUser);
+router.put("/ban", authMiddleware, roleMiddleware, banUser);
 router.delete("/delete/:id", authMiddleware, roleMiddleware, deleteUser);
 router.get("/users", authMiddleware, roleMiddleware, getUsers);
 router.get(

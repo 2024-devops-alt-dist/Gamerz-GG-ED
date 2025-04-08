@@ -32,13 +32,17 @@ exports.validateUser = async (req, res) => {
 
 exports.banUser = async (req, res) => {
   try {
-    const user = await User.findById(req.params.id);
-    if (!user) {
+    const { ids } = req.body;
+    const users = await User.find({ _id: { $in: ids } });
+    if (!users || users.length === 0) {
       return res.status(404).json({ message: "Utilisateur non trouvé" });
     }
-
-    user.status = "banned";
-    await user.save();
+    if (users.length > 0) {
+      for (const user of users) {
+        user.status = "banned";
+        await user.save();
+      }
+    }
 
     res.json({ message: "Utilisateur banni avec succès" });
   } catch (error) {
@@ -96,12 +100,10 @@ exports.getAllUsersPendingStatus = async (req, res) => {
     const pendingUsers = await User.find({ status: "pending" });
 
     if (pendingUsers.length === 0) {
-      return res
-        .status(200)
-        .json({
-          message: "Aucun utilisateur en attente de validation.",
-          users: pendingUsers,
-        });
+      return res.status(200).json({
+        message: "Aucun utilisateur en attente de validation.",
+        users: pendingUsers,
+      });
     }
 
     res.status(200).json(pendingUsers);
