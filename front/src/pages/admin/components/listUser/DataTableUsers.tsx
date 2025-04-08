@@ -19,52 +19,58 @@ import { Button } from "@/components/ui/button";
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
-  type: string;
   refreash: () => void;
+  setStatusSelections: React.Dispatch<
+    React.SetStateAction<Record<string, boolean>>
+  >;
+  statusSelections: Record<string, boolean>;
+  setBanedSelections: React.Dispatch<
+    React.SetStateAction<Record<string, boolean>>
+  >;
+  banedSelections: Record<string, boolean>;
 }
 const DataTableUsers = <TData, TValue>({
   data,
   columns,
   refreash,
-  type,
+  statusSelections,
+  setStatusSelections,
+  banedSelections,
+  setBanedSelections,
 }: DataTableProps<TData, TValue>) => {
-  console.log("columns", columns);
-
-  const [rowSelection, setRowSelection] = useState({});
   const [adminService] = useState(new AdminService());
 
   const table = useReactTable({
     data,
     columns,
     getCoreRowModel: getCoreRowModel(),
-    onRowSelectionChange: setRowSelection,
-    state: {
-      rowSelection,
+    meta: {
+      statusSelections,
+      setStatusSelections,
+      banedSelections,
+      setBanedSelections,
     },
   });
 
   const onSubmit = () => {
-    console.log(data);
+    const tableRows = table.getRowModel().rows;
 
-    const selectedIndexes = Object.keys(rowSelection);
-    const selectedUsers = selectedIndexes
-      .map((index) => data[parseInt(index)])
-      .filter(Boolean);
-    console.log(selectedUsers);
-    const ids = selectedUsers.map((i) => {
-      console.log("i._id", i._id);
-      return i._id;
-    });
+    const selectedUsers = tableRows
+      .filter((row) => statusSelections[row.id])
+      .map((row) => row.original);
+
+    const ids = selectedUsers.map((user) => user._id);
     if (ids.length === 0) return;
     try {
       adminService.validate(ids).then(() => {
         refreash();
-        setRowSelection({});
+        setStatusSelections({});
       });
     } catch (error) {
       console.log(error);
     }
   };
+
   return (
     <div>
       <div className="rounded-md border">
@@ -118,9 +124,14 @@ const DataTableUsers = <TData, TValue>({
         </Table>
       </div>
       <div className="flex justify-end mt-4">
-        {type === "pending" && (
+        {Object.keys(statusSelections).length > 0 && (
           <Button disabled={data.length <= 0} onClick={onSubmit}>
             Approuver
+          </Button>
+        )}
+        {Object.keys(banedSelections).length > 0 && (
+          <Button disabled={data.length <= 0} onClick={onSubmit}>
+            Banissement
           </Button>
         )}
       </div>

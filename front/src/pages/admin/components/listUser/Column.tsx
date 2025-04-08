@@ -1,8 +1,23 @@
 import userI from "@/interfaces/userI";
-import { ColumnDef } from "@tanstack/react-table";
+import { ColumnDef, Row } from "@tanstack/react-table";
 import { Checkbox } from "@/components/ui/checkbox";
-
-export const columns = (): ColumnDef<userI>[] => {
+import { CheckedState } from "@radix-ui/react-checkbox";
+type columnsProps = {
+  statusSelections: Record<string, boolean>;
+  setStatusSelections: React.Dispatch<
+    React.SetStateAction<Record<string, boolean>>
+  >;
+  banedSelections: Record<string, boolean>;
+  setBanedSelections: React.Dispatch<
+    React.SetStateAction<Record<string, boolean>>
+  >;
+};
+export const columns = ({
+  statusSelections,
+  setStatusSelections,
+  banedSelections,
+  setBanedSelections,
+}: columnsProps): ColumnDef<userI>[] => {
   return [
     {
       accessorKey: "username",
@@ -16,45 +31,106 @@ export const columns = (): ColumnDef<userI>[] => {
       accessorKey: "status",
       id: "status",
       header: ({ table }) => {
-        const isStatusPending = table
+        const pendingRows = table
           .getRowModel()
-          .rows.filter((s) => s.original.status === "pending");
-        console.log(isStatusPending.length);
+          .rows.filter((row) => row.original.status === "pending");
+        const isChecked = getSelectValues(statusSelections, pendingRows);
 
         return (
-          <div className="flex gap-2">
+          <div className="flex gap-2 items-center">
             <h4>Statut</h4>
-            {isStatusPending.length > 0 && (
+            {pendingRows.length > 0 && (
               <Checkbox
-                checked={
-                  table.getIsAllPageRowsSelected() ||
-                  (table.getIsSomePageRowsSelected() && "indeterminate")
-                }
-                onCheckedChange={(value) =>
-                  table.toggleAllPageRowsSelected(!!value)
-                }
-                aria-label="Select all"
+                checked={isChecked}
+                onCheckedChange={(value) => {
+                  pendingRows.forEach((row) => {
+                    getSelectValue(setStatusSelections, value, row);
+                  });
+                }}
               />
             )}
           </div>
         );
       },
-      cell: ({ row }) => (
-        <div className="flex gap-2">
-          {row.original.status}
-          {row.original.status === "pending" && (
-            <Checkbox
-              checked={row.getIsSelected()}
-              onCheckedChange={(value) => {
-                console.log("value checkbox", value);
+      cell: ({ row }) => {
+        return (
+          <div className="flex gap-2">
+            {row.original.status}
+            {row.original.status === "pending" && (
+              <Checkbox
+                checked={!!statusSelections[row.id]}
+                onCheckedChange={(value) => {
+                  getSelectValue(setStatusSelections, value, row);
+                }}
+                aria-label="Select row"
+              />
+            )}
+          </div>
+        );
+      },
+    },
+    {
+      accessorKey: "baned",
+      id: "baned",
+      header: ({ table }) => {
+        const bannedRows = table.getRowModel().rows.map((row) => row);
+        const isChecked = getSelectValues(banedSelections, bannedRows);
 
-                return row.toggleSelected(!!value);
+        return (
+          <div className="flex gap-2">
+            <h4>Banissement</h4>
+            <Checkbox
+              checked={isChecked}
+              onCheckedChange={(value) => {
+                bannedRows.forEach((row) => {
+                  getSelectValue(setBanedSelections, value, row);
+                });
+              }}
+              aria-label="Select all"
+            />
+          </div>
+        );
+      },
+      cell: ({ row }) => {
+        return (
+          <div className="flex gap-2">
+            <Checkbox
+              checked={!!banedSelections[row.id]}
+              onCheckedChange={(value) => {
+                getSelectValue(setBanedSelections, value, row);
               }}
               aria-label="Select row"
             />
-          )}
-        </div>
-      ),
+          </div>
+        );
+      },
     },
   ];
+};
+
+const getSelectValues = (
+  selections: Record<string, boolean>,
+  table: Row<userI>[]
+): boolean | "indeterminate" => {
+  const allSelected =
+    table.length > 0 && table.every((row) => selections[row.id]);
+  const someSelected = table.some((row) => selections[row.id]);
+  if (allSelected) return true;
+  else if (someSelected) return "indeterminate";
+  else return false;
+};
+const getSelectValue = (
+  setSelections: React.Dispatch<React.SetStateAction<Record<string, boolean>>>,
+  value: CheckedState,
+  row: Row<userI>
+) => {
+  setSelections((prev: Record<string, boolean>) => {
+    const updateBan = { ...prev };
+    if (value) {
+      updateBan[row.id] = true;
+    } else {
+      delete updateBan[row.id];
+    }
+    return updateBan;
+  });
 };
