@@ -10,38 +10,32 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
-import userI from "@/interfaces/userI";
-import AdminService from "@/services/adminService";
+import IRoom from "@/interfaces/IRoom";
+import RoomService from "@/services/roomService";
 import { useState } from "react";
 
-interface DialogBannedProps {
-  actionType: "ban" | "delete";
-  users: userI[];
+interface DialogDestructRoomProps {
+  rooms: IRoom[];
   refresh: () => void;
   setSelections: React.Dispatch<React.SetStateAction<Record<string, boolean>>>;
 }
-const DialogBanned = ({
-  actionType,
-  users,
+const DialogDestructRoom = ({
+  rooms: rooms,
   refresh,
   setSelections,
-}: DialogBannedProps) => {
-  const [adminService] = useState(new AdminService());
+}: DialogDestructRoomProps) => {
+  const [roomService] = useState(new RoomService());
+  console.log(rooms);
 
   const onSubmit = () => {
-    const ids = users.map((user) => user._id);
     try {
-      if (actionType === "ban") {
-        adminService.banned(ids).then(() => {
-          refresh();
-          setSelections({});
-        });
-      } else {
-        adminService.deleteByIds(ids).then(() => {
-          refresh();
-          setSelections({});
-        });
-      }
+      const ids = rooms.map((room) => room._id);
+      if (!ids || ids.length === 0) return;
+      roomService.deleteByIds(ids).then((resp) => {
+        console.log(resp);
+        refresh();
+        setSelections({});
+      });
     } catch (error) {
       console.log(error);
     }
@@ -50,15 +44,14 @@ const DialogBanned = ({
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>
-        <Button>{actionType === "ban" ? "Bannissement" : "Suppression"}</Button>
+        <Button>Suppression</Button>
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle>
-            Êtes vous sur de vouloir
-            {actionType === "ban" ? " bannir" : " supprimer"} :
-            {Array.isArray(users) && users.length > 0 ? (
-              users.map((user) => <p key={user.email}>{user.email}</p>)
+            Êtes vous sur de vouloir supprimer :
+            {Array.isArray(rooms) && rooms.length > 0 ? (
+              rooms.map((room) => <p key={room.game}>{room.game}</p>)
             ) : (
               <p>Aucun utilisateur sélectionné</p>
             )}
@@ -77,4 +70,4 @@ const DialogBanned = ({
     </AlertDialog>
   );
 };
-export default DialogBanned;
+export default DialogDestructRoom;

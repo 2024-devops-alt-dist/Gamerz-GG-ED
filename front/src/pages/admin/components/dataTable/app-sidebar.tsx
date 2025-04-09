@@ -16,6 +16,7 @@ import {
 } from "@/components/ui/sidebar";
 import ListUser from "../listUser/ListUser";
 import { NavUser } from "@/pages/home/component/NavUser.tsx";
+import ListRooms from "../listRooms/ListRooms";
 
 const data = {
   navMain: [
@@ -30,6 +31,10 @@ const data = {
         {
           title: "En attente d'aprobation",
           component: () => <ListUser type={"pending"} key="pending" />,
+        },
+        {
+          title: "Liste des salons",
+          component: () => <ListRooms />,
         },
       ],
     },

@@ -16,7 +16,7 @@ import {
 import { useState } from "react";
 import AdminService from "@/services/adminService";
 import { Button } from "@/components/ui/button";
-import DialogBanned from "../DialogBanned";
+import DialogDestructUser from "./DialogDestructUser";
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
@@ -152,7 +152,7 @@ const DataTableUsers = <TData, TValue>({
           </Button>
         )}
         {Object.keys(banedSelections).length > 0 && (
-          <DialogBanned
+          <DialogDestructUser
             actionType={"ban"}
             setSelections={setBanedSelections}
             refresh={refresh}
@@ -160,7 +160,7 @@ const DataTableUsers = <TData, TValue>({
           />
         )}
         {Object.keys(deleteSelections).length > 0 && (
-          <DialogBanned
+          <DialogDestructUser
             actionType={"delete"}
             setSelections={setDeleteSelections}
             refresh={refresh}

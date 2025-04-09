@@ -1,20 +1,15 @@
+
+import IRoom from "@/interfaces/IRoom";
+import BaseService from "./baseService";
 import axios from "axios";
-import roomI from "@/interfaces/roomI";
+class RoomService extends BaseService<IRoom> {
+  constructor() {
+    super("rooms/");
+  }
 
-class RoomService {
-    private API_URL = `${import.meta.env.VITE_API_URL}rooms`;
+    private API = `${import.meta.env.VITE_API_URL}rooms`;
 
-    async getAll(): Promise<roomI[] | null> {
-        const resp = await axios.get(this.API_URL, {
-            withCredentials: true,
-        });
 
-        if (resp.status === 200) {
-            return resp.data;
-        } else {
-            return null;
-        }
-    }
 
     async getById(roomId: string): Promise<roomI | null> {
         const resp = await axios.get(`${this.API_URL}/${roomId}`, {
@@ -46,21 +41,6 @@ class RoomService {
         return resp.data;
     }
 
-    async deleteRoom(roomId: string): Promise<{ message: string }> {
-        const resp = await axios.delete(`${this.API_URL}/${roomId}`, {
-            withCredentials: true,
-        });
-
-        return resp.data;
-    }
-
-    async create(game: string): Promise<roomI> {
-        const resp = await axios.post(this.API_URL, { game }, {
-            withCredentials: true,
-        });
-
-        return resp.data;
-    }
 }
 
 export default RoomService;
