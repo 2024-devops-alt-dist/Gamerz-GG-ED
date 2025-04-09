@@ -15,7 +15,7 @@ function ListRooms() {
   async function getAllRooms() {
     try {
       const resp = await roomService.getAll();
-      setRooms(resp.data);
+      setRooms(resp);
     } catch (error) {
       console.log(error);
     }

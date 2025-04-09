@@ -18,7 +18,7 @@ class BaseService<T> {
     const resp = await axios.get(`${this.API_URL}`, {
       withCredentials: true,
     });
-    return resp;
+    return resp.data;
   }
 
   async deleteByIds(ids: string[]) {
