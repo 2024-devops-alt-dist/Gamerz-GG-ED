@@ -16,6 +16,7 @@ export default function ChatRoomPage() {
     const {id: roomId} = useParams();
     const {user, loading} = useAuth();
 
+    // @ts-ignore
     return (
         <SidebarProvider>
             <AppSidebar/>

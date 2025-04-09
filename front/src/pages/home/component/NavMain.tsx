@@ -40,7 +40,7 @@ export function NavMain() {
                         <SidebarMenuButton
                             tooltip={room.game}
                             onClick={() => navigate(`/rooms/${room._id}`)}
-                            className="flex items-center">
+                            className="flex items-center cursor-pointer">
                             <Gamepad2 className="mr-2 h-4 w-4"/>
                             <span className="leading-none">{room.game}</span>
                         </SidebarMenuButton>
