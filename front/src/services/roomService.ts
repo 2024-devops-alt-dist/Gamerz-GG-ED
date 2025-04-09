@@ -3,7 +3,7 @@ import BaseService from "./baseService";
 
 class RoomService extends BaseService<IRoom> {
   constructor() {
-    super("rooms");
+    super("rooms/");
   }
 }
 

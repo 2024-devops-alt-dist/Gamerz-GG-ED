@@ -20,5 +20,13 @@ class BaseService<T> {
     });
     return resp;
   }
+
+  async deleteByIds(ids: string[]) {
+    const resp = await axios.delete(`${this.API_URL}delete`, {
+      data: { ids },
+      withCredentials: true,
+    });
+    return resp;
+  }
 }
 export default BaseService;
