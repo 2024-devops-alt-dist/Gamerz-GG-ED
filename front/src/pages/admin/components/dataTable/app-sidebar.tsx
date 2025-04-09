@@ -1,5 +1,5 @@
 import * as React from "react";
-import {GalleryVerticalEnd} from "lucide-react";
+import { GalleryVerticalEnd } from "lucide-react";
 import {
   Sidebar,
   SidebarContent,
@@ -14,9 +14,8 @@ import {
   SidebarMenuSubItem,
   SidebarRail,
 } from "@/components/ui/sidebar";
-import ListUser from "./listUser/ListUser";
-import ListUserPending from "./listUser/ListUserPending";
-import {NavUser} from "@/pages/home/component/NavUser.tsx";
+import ListUser from "../listUser/ListUser";
+import { NavUser } from "@/pages/home/component/NavUser.tsx";
 
 const data = {
   navMain: [
@@ -25,12 +24,12 @@ const data = {
       items: [
         {
           title: "Liste de tous les utilisateurs",
-          component: <ListUser />,
+          component: () => <ListUser type={"all"} key="all" />,
           isActive: true,
         },
         {
           title: "En attente d'aprobation",
-          component: <ListUserPending />,
+          component: () => <ListUser type={"pending"} key="pending" />,
         },
       ],
     },
@@ -38,7 +37,7 @@ const data = {
 };
 
 interface AppSidebarProps {
-  onSelectComponent: (component: React.ReactElement) => void;
+  onSelectComponent: (component: () => React.ReactElement) => void;
 }
 
 const AppSidebar = ({ onSelectComponent, ...props }: AppSidebarProps) => {
@@ -76,9 +75,12 @@ const AppSidebar = ({ onSelectComponent, ...props }: AppSidebarProps) => {
                         <SidebarMenuSubButton
                           asChild
                           isActive={item.isActive}
-                          onClick={() =>
-                            item.component && onSelectComponent(item.component)
-                          }
+                          onClick={() => {
+                            return (
+                              item.component &&
+                              onSelectComponent(item.component)
+                            );
+                          }}
                         >
                           <div className="cursor-pointer">{item.title}</div>
                         </SidebarMenuSubButton>
@@ -92,7 +94,7 @@ const AppSidebar = ({ onSelectComponent, ...props }: AppSidebarProps) => {
         </SidebarGroup>
       </SidebarContent>
       <SidebarFooter>
-        <NavUser/>
+        <NavUser />
       </SidebarFooter>
       <SidebarRail />
     </Sidebar>

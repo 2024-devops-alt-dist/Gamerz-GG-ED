@@ -16,55 +16,83 @@ import {
 import { useState } from "react";
 import AdminService from "@/services/adminService";
 import { Button } from "@/components/ui/button";
+import DialogBanned from "../DialogBanned";
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
-  type: string;
-  refreash: () => void;
+  refresh: () => void;
+  setStatusSelections: React.Dispatch<
+    React.SetStateAction<Record<string, boolean>>
+  >;
+  statusSelections: Record<string, boolean>;
+  setBanedSelections: React.Dispatch<
+    React.SetStateAction<Record<string, boolean>>
+  >;
+  banedSelections: Record<string, boolean>;
+  deleteSelections: Record<string, boolean>;
+  setDeleteSelections: React.Dispatch<
+    React.SetStateAction<Record<string, boolean>>
+  >;
 }
 const DataTableUsers = <TData, TValue>({
   data,
   columns,
-  refreash,
-  type,
+  refresh,
+  statusSelections,
+  setStatusSelections,
+  banedSelections,
+  setBanedSelections,
+  deleteSelections,
+  setDeleteSelections,
 }: DataTableProps<TData, TValue>) => {
-  console.log("columns", columns);
-
-  const [rowSelection, setRowSelection] = useState({});
   const [adminService] = useState(new AdminService());
 
   const table = useReactTable({
     data,
     columns,
     getCoreRowModel: getCoreRowModel(),
-    onRowSelectionChange: setRowSelection,
-    state: {
-      rowSelection,
+    meta: {
+      statusSelections,
+      setStatusSelections,
+      banedSelections,
+      setBanedSelections,
+      deleteSelections,
+      setDeleteSelections,
     },
   });
 
-  const onSubmit = () => {
-    console.log(data);
+  const onValidate = () => {
+    const tableRows = table.getRowModel().rows;
 
-    const selectedIndexes = Object.keys(rowSelection);
-    const selectedUsers = selectedIndexes
-      .map((index) => data[parseInt(index)])
-      .filter(Boolean);
-    console.log(selectedUsers);
-    const ids = selectedUsers.map((i) => {
-      console.log("i._id", i._id);
-      return i._id;
-    });
+    const selectedUsers = tableRows
+      .filter((row) => statusSelections[row.id])
+      .map((row) => row.original);
+
+    const ids = selectedUsers.map((user) => user._id);
+
     if (ids.length === 0) return;
     try {
       adminService.validate(ids).then(() => {
-        refreash();
-        setRowSelection({});
+        refresh();
+        setStatusSelections({});
       });
     } catch (error) {
       console.log(error);
     }
   };
+  const getUsersFromSelection = (selection: Record<string, boolean>) => {
+    const tableRows = table.getRowModel().rows;
+
+    const selectedUsers = tableRows
+      .filter((row) => selection[row.id])
+      .map((row) => row.original);
+
+    const ids = selectedUsers.map((user) => user);
+    if (ids.length === 0) return;
+
+    return ids;
+  };
+
   return (
     <div>
       <div className="rounded-md border">
@@ -118,10 +146,26 @@ const DataTableUsers = <TData, TValue>({
         </Table>
       </div>
       <div className="flex justify-end mt-4">
-        {type === "pending" && (
-          <Button disabled={data.length <= 0} onClick={onSubmit}>
+        {Object.keys(statusSelections).length > 0 && (
+          <Button disabled={data.length <= 0} onClick={onValidate}>
             Approuver
           </Button>
+        )}
+        {Object.keys(banedSelections).length > 0 && (
+          <DialogBanned
+            actionType={"ban"}
+            setSelections={setBanedSelections}
+            refresh={refresh}
+            users={getUsersFromSelection(banedSelections)}
+          />
+        )}
+        {Object.keys(deleteSelections).length > 0 && (
+          <DialogBanned
+            actionType={"delete"}
+            setSelections={setDeleteSelections}
+            refresh={refresh}
+            users={getUsersFromSelection(deleteSelections)}
+          />
         )}
       </div>
     </div>
