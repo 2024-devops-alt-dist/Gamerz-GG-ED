@@ -14,18 +14,18 @@ import userI from "@/interfaces/userI";
 import AdminService from "@/services/adminService";
 import { useState } from "react";
 
-interface DialogBannedProps {
+interface DialogDestructUserProps {
   actionType: "ban" | "delete";
   users: userI[];
   refresh: () => void;
   setSelections: React.Dispatch<React.SetStateAction<Record<string, boolean>>>;
 }
-const DialogBanned = ({
+const DialogDestructUser = ({
   actionType,
   users,
   refresh,
   setSelections,
-}: DialogBannedProps) => {
+}: DialogDestructUserProps) => {
   const [adminService] = useState(new AdminService());
 
   const onSubmit = () => {
@@ -77,4 +77,4 @@ const DialogBanned = ({
     </AlertDialog>
   );
 };
-export default DialogBanned;
+export default DialogDestructUser;

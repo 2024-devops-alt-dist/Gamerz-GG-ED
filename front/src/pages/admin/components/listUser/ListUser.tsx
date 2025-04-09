@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/no-unused-expressions */
 import { useEffect, useState } from "react";
-import DataTableUsers from "../dataTable/DataTableUsers";
+import DataTableUsers from "../dataTable/dataTableUsers/DataTableUsers";
 import UserService from "@/services/UserService";
 import userI from "@/interfaces/userI";
-import { columns } from "../dataTable/Column";
+import { columns } from "../dataTable/dataTableUsers/Column";
 import { ListUserType } from "@/interfaces/Iglobal";
 
 interface ListUserProps {
