@@ -10,7 +10,9 @@ exports.sendMessage = async (req, res) => {
         if (!room) return res.status(404).json({ message: "Salon non trouvé" });
 
         if (!room.users.includes(req.user.id)) {
-            return res.status(403).json({ message: "Vous devez rejoindre ce salon avant d'envoyer un message" });
+            return res
+                .status(403)
+                .json({ message: "Vous devez rejoindre ce salon avant d'envoyer un message" });
         }
 
         const newMessage = new Message({
@@ -20,7 +22,10 @@ exports.sendMessage = async (req, res) => {
         });
 
         await newMessage.save();
-        res.status(201).json(newMessage);
+
+        const populatedMessage = await newMessage.populate("senderId", "username");
+
+        res.status(201).json(populatedMessage);
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
@@ -33,7 +38,9 @@ exports.getMessages = async (req, res) => {
         const room = await Room.findById(roomId);
         if (!room) return res.status(404).json({ message: "Salon non trouvé" });
 
-        const messages = await Message.find({ roomId }).populate("senderId", "username").sort({ timestamp: 1 });
+        const messages = await Message.find({ roomId })
+            .populate("senderId", "username")
+            .sort({ timestamp: 1 });
 
         res.status(200).json(messages);
     } catch (error) {
