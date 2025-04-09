@@ -26,7 +26,6 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       } else {
         setUser(resp);
       }
-      console.log(user);
     } catch (error) {
       console.log(error);
       setUser(null);
