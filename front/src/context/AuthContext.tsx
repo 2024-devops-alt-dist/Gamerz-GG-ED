@@ -1,6 +1,6 @@
 import userI from "@/interfaces/userI";
 import AuthService from "@/services/authService";
-import { createContext, ReactNode, useEffect, useState } from "react";
+import {createContext, ReactNode, useContext, useEffect, useState} from "react";
 
 interface AuthProviderProps {
   children: ReactNode;
@@ -45,3 +45,11 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 };
 
 export default AuthContext;
+
+export const useAuth = () => {
+  const context = useContext(AuthContext);
+  if (!context) {
+    throw new Error("useAuth doit être utilisé dans un AuthProvider");
+  }
+  return context;
+};
