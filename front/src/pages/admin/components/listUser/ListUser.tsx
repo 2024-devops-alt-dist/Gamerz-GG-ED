@@ -1,8 +1,9 @@
+/* eslint-disable @typescript-eslint/no-unused-expressions */
 import { useEffect, useState } from "react";
-import DataTableUsers from "./DataTableUsers";
+import DataTableUsers from "../dataTable/DataTableUsers";
 import UserService from "@/services/UserService";
 import userI from "@/interfaces/userI";
-import { columns } from "./Column";
+import { columns } from "../dataTable/Column";
 import { ListUserType } from "@/interfaces/Iglobal";
 
 interface ListUserProps {
@@ -38,11 +39,16 @@ function ListUser({ type }: ListUserProps) {
       console.log(error);
     }
   }
+  const refresh = () => {
+    type === "all" ? getAllUsers() : getAllUsersByStatusPending();
+  };
+
   useEffect(() => {
     if (type === "all") getAllUsers();
     else if (type === "pending") getAllUsersByStatusPending();
     else return;
   }, [type]);
+
   const columnsConfig = columns({
     statusSelections,
     setStatusSelections,
@@ -60,7 +66,7 @@ function ListUser({ type }: ListUserProps) {
         banedSelections={banedSelections}
         statusSelections={statusSelections}
         setStatusSelections={setStatusSelections}
-        refreash={users ? getAllUsers : getAllUsersByStatusPending}
+        refresh={refresh}
         columns={columnsConfig}
         data={
           type === "all" && users

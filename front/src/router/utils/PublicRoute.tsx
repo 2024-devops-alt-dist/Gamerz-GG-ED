@@ -4,7 +4,6 @@ import { Navigate, Outlet } from "react-router-dom";
 
 const PublicRoute = () => {
   const authContext = useContext(AuthContext);
-  console.log(authContext);
 
   if (authContext === null) return <p>Erreur contexte ...</p>;
   const { user, loading } = authContext;

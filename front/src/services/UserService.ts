@@ -9,7 +9,6 @@ class UserService {
       withCredentials: true,
     });
     if (resp.status === 200) {
-      console.log(resp.data);
       return resp.data;
     } else {
       return null;

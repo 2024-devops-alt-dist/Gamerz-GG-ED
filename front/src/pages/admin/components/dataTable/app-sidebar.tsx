@@ -14,7 +14,7 @@ import {
   SidebarMenuSubItem,
   SidebarRail,
 } from "@/components/ui/sidebar";
-import ListUser from "./listUser/ListUser";
+import ListUser from "../listUser/ListUser";
 import { NavUser } from "@/pages/home/component/NavUser.tsx";
 
 const data = {
@@ -76,8 +76,6 @@ const AppSidebar = ({ onSelectComponent, ...props }: AppSidebarProps) => {
                           asChild
                           isActive={item.isActive}
                           onClick={() => {
-                            console.log(item.component);
-
                             return (
                               item.component &&
                               onSelectComponent(item.component)

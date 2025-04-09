@@ -20,7 +20,7 @@ import DialogBanned from "../DialogBanned";
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
-  refreash: () => void;
+  refresh: () => void;
   setStatusSelections: React.Dispatch<
     React.SetStateAction<Record<string, boolean>>
   >;
@@ -37,7 +37,7 @@ interface DataTableProps<TData, TValue> {
 const DataTableUsers = <TData, TValue>({
   data,
   columns,
-  refreash,
+  refresh,
   statusSelections,
   setStatusSelections,
   banedSelections,
@@ -69,23 +69,22 @@ const DataTableUsers = <TData, TValue>({
       .map((row) => row.original);
 
     const ids = selectedUsers.map((user) => user._id);
-    console.log(ids);
 
     if (ids.length === 0) return;
     try {
       adminService.validate(ids).then(() => {
-        refreash();
+        refresh();
         setStatusSelections({});
       });
     } catch (error) {
       console.log(error);
     }
   };
-  const onBanned = () => {
+  const getUsersFromSelection = (selection: Record<string, boolean>) => {
     const tableRows = table.getRowModel().rows;
 
     const selectedUsers = tableRows
-      .filter((row) => banedSelections[row.id])
+      .filter((row) => selection[row.id])
       .map((row) => row.original);
 
     const ids = selectedUsers.map((user) => user);
@@ -93,18 +92,7 @@ const DataTableUsers = <TData, TValue>({
 
     return ids;
   };
-  const onDelete = () => {
-    const tableRows = table.getRowModel().rows;
 
-    const selectedUsers = tableRows
-      .filter((row) => banedSelections[row.id])
-      .map((row) => row.original);
-
-    const ids = selectedUsers.map((user) => user);
-    if (ids.length === 0) return;
-
-    return ids;
-  };
   return (
     <div>
       <div className="rounded-md border">
@@ -165,13 +153,19 @@ const DataTableUsers = <TData, TValue>({
         )}
         {Object.keys(banedSelections).length > 0 && (
           <DialogBanned
-            setBanedSelections={setBanedSelections}
-            refreash={refreash}
-            users={onBanned()}
+            actionType={"ban"}
+            setSelections={setBanedSelections}
+            refresh={refresh}
+            users={getUsersFromSelection(banedSelections)}
           />
         )}
         {Object.keys(deleteSelections).length > 0 && (
-          <Button onClick={onDelete}>Supprimer</Button>
+          <DialogBanned
+            actionType={"delete"}
+            setSelections={setDeleteSelections}
+            refresh={refresh}
+            users={getUsersFromSelection(deleteSelections)}
+          />
         )}
       </div>
     </div>

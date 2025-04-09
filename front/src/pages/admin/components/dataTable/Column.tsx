@@ -25,6 +25,19 @@ export const columns = ({
   deleteSelections,
   setDeleteSelections,
 }: columnsProps): ColumnDef<userI>[] => {
+  const hasSelectionElsewhere = (
+    currentKey: "status" | "baned" | "delete",
+    selections: {
+      status: Record<string, boolean>;
+      baned: Record<string, boolean>;
+      delete: Record<string, boolean>;
+    }
+  ): boolean => {
+    return Object.entries(selections)
+      .filter(([key]) => key !== currentKey)
+      .some(([_, value]) => Object.keys(value).length > 0);
+  };
+
   return [
     {
       accessorKey: "username",
@@ -87,6 +100,11 @@ export const columns = ({
           <div className="flex gap-2">
             <h4>Banissement</h4>
             <Checkbox
+              disabled={hasSelectionElsewhere("baned", {
+                status: statusSelections,
+                baned: banedSelections,
+                delete: deleteSelections,
+              })}
               checked={isChecked}
               onCheckedChange={(value) => {
                 bannedRows.forEach((row) => {
@@ -102,6 +120,11 @@ export const columns = ({
         return (
           <div className="flex gap-2">
             <Checkbox
+              disabled={hasSelectionElsewhere("baned", {
+                status: statusSelections,
+                baned: banedSelections,
+                delete: deleteSelections,
+              })}
               checked={!!banedSelections[row.id]}
               onCheckedChange={(value) => {
                 getSelectValue(setBanedSelections, value, row);
@@ -123,6 +146,11 @@ export const columns = ({
           <div className="flex gap-2">
             <h4>Suppression</h4>
             <Checkbox
+              disabled={hasSelectionElsewhere("delete", {
+                status: statusSelections,
+                baned: banedSelections,
+                delete: deleteSelections,
+              })}
               checked={isChecked}
               onCheckedChange={(value) => {
                 deleteRows.forEach((row) => {
@@ -138,6 +166,11 @@ export const columns = ({
         return (
           <div className="flex gap-2">
             <Checkbox
+              disabled={hasSelectionElsewhere("delete", {
+                status: statusSelections,
+                baned: banedSelections,
+                delete: deleteSelections,
+              })}
               checked={!!deleteSelections[row.id]}
               onCheckedChange={(value) => {
                 getSelectValue(setDeleteSelections, value, row);

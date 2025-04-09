@@ -22,7 +22,10 @@ class AdminService {
   }
 
   async deleteByIds(ids: string[]) {
-    const resp = await axios.delete(`${this.API_URL}delete`, { data: { ids } });
+    const resp = await axios.delete(`${this.API_URL}delete`, {
+      data: { ids },
+      withCredentials: true,
+    });
     return resp;
   }
 }
