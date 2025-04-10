@@ -26,6 +26,10 @@ function socketHandler(io) {
             }
         });
 
+        socket.on("typing", ({ roomId, username }) => {
+            socket.to(roomId).emit("userTyping", { username });
+        });
+
         socket.on("disconnect", () => {
             console.log("🔴 Déconnexion :", socket.id);
         });

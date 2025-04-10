@@ -1,11 +1,11 @@
-import { MessageCircle, SendHorizonal } from "lucide-react";
-import React, { useEffect, useRef, useState } from "react";
-import { io, Socket } from "socket.io-client";
+import {MessageCircle, SendHorizonal} from "lucide-react";
+import React, {useEffect, useRef, useState} from "react";
+import {io, Socket} from "socket.io-client";
 import MessageService from "@/services/messageService";
 import RoomService from "@/services/roomService";
 import messageI from "@/interfaces/messageI";
 import roomI from "@/interfaces/roomI";
-import { useAuth } from "@/context/AuthContext";
+import {useAuth} from "@/context/AuthContext";
 
 interface ChatRoomProps {
     roomId: string;
@@ -13,13 +13,14 @@ interface ChatRoomProps {
 
 const socketUrl = import.meta.env.VITE_SOCKET_URL;
 
-const ChatRoom: React.FC<ChatRoomProps> = ({ roomId }) => {
-    const { user, loading: authLoading } = useAuth();
+const ChatRoom: React.FC<ChatRoomProps> = ({roomId}) => {
+    const {user, loading: authLoading} = useAuth();
     const [message, setMessage] = useState<string>("");
     const [messages, setMessages] = useState<messageI[]>([]);
     const [room, setRoom] = useState<roomI | null>(null);
     const [loading, setLoading] = useState<boolean>(true);
     const [socketError, setSocketError] = useState<boolean>(false);
+    const [typingUser, setTypingUser] = useState<string | null>(null);
     const bottomRef = useRef<HTMLDivElement>(null);
     const socketRef = useRef<Socket | null>(null);
     const userId = user?._id;
@@ -51,7 +52,7 @@ const ChatRoom: React.FC<ChatRoomProps> = ({ roomId }) => {
         if (!roomId || !userId || socketError || !socketRef.current) return;
 
         const socket = socketRef.current;
-        socket.emit("joinRoom", { roomId, userId });
+        socket.emit("joinRoom", {roomId, userId});
 
         const fetchData = async () => {
             setLoading(true);
@@ -78,13 +79,23 @@ const ChatRoom: React.FC<ChatRoomProps> = ({ roomId }) => {
             setMessages((prev) => [...prev, msg]);
         });
 
+        socket.on("userTyping", ({username}) => {
+            if (username !== user?.username) {
+                setTypingUser(username);
+                setTimeout(() => {
+                    setTypingUser(null);
+                }, 3000);
+            }
+        });
+
         return () => {
             socket.off("newMessage");
+            socket.off("userTyping");
         };
     }, [roomId, userId, socketError]);
 
     useEffect(() => {
-        bottomRef.current?.scrollIntoView({ behavior: "smooth" });
+        bottomRef.current?.scrollIntoView({behavior: "smooth"});
     }, [messages]);
 
     if (socketError) {
@@ -118,7 +129,7 @@ const ChatRoom: React.FC<ChatRoomProps> = ({ roomId }) => {
     return (
         <div className="flex flex-col h-[calc(100vh-4rem)]">
             <div className="flex items-center gap-4 px-6 py-4 border-b border-gray-700">
-                <MessageCircle className="text-gray-400 w-6 h-6" />
+                <MessageCircle className="text-gray-400 w-6 h-6"/>
                 <h2 className="text-xl font-semibold text-gray-200 tracking-wide">
                     {room.game}
                 </h2>
@@ -171,7 +182,14 @@ const ChatRoom: React.FC<ChatRoomProps> = ({ roomId }) => {
                         </div>
                     );
                 })}
-                <div ref={bottomRef} />
+
+                {typingUser && (
+                    <div className="text-sm text-gray-400 italic px-2">
+                        {typingUser} est en train d’écrire...
+                    </div>
+                )}
+
+                <div ref={bottomRef}/>
             </div>
 
             <div className="p-4 border-t ">
@@ -179,7 +197,15 @@ const ChatRoom: React.FC<ChatRoomProps> = ({ roomId }) => {
                     <input
                         type="text"
                         value={message}
-                        onChange={(e) => setMessage(e.target.value)}
+                        onChange={(e) => {
+                            setMessage(e.target.value);
+                            if (socketRef.current && user?.username) {
+                                socketRef.current.emit("typing", {
+                                    roomId,
+                                    username: user.username,
+                                });
+                            }
+                        }}
                         onKeyDown={(e) => e.key === "Enter" && handleSend()}
                         placeholder="Ton message..."
                         className="flex-1 px-4 py-2 rounded-xl bg-[#1e1e1e] text-white placeholder-gray-500 border border-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-500 transition"
@@ -188,7 +214,7 @@ const ChatRoom: React.FC<ChatRoomProps> = ({ roomId }) => {
                         onClick={handleSend}
                         className="p-4 rounded-full bg-[#1f2532] hover:bg-[#2a3245] transition flex items-center justify-center border border-gray-700"
                     >
-                        <SendHorizonal className="w-5 h-5 text-white" />
+                        <SendHorizonal className="w-5 h-5 text-white"/>
                     </button>
                 </div>
             </div>
