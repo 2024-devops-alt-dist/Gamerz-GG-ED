@@ -28,5 +28,19 @@ class AuthService {
     });
     return resp.data;
   }
+
+  async updateProfile(data: { username?: string; email?: string }) {
+    const resp = await axios.put(`${this.API_URL}update-profile`, data, {
+      withCredentials: true,
+    });
+    return resp.data;
+  }
+
+  async changePassword(data: { oldPassword: string; newPassword: string }) {
+    const resp = await axios.put(`${this.API_URL}change-password`, data, {
+      withCredentials: true,
+    });
+    return resp.data;
+  }
 }
 export default AuthService;

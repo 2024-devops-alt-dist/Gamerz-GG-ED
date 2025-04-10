@@ -1,6 +1,6 @@
 import { useContext } from "react";
-import { BadgeCheck, ChevronsUpDown, LogOut } from "lucide-react";
-
+import {BadgeCheck, ChevronsUpDown, LogOut} from "lucide-react";
+import { Link } from "react-router-dom";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import {
     DropdownMenu,
@@ -65,10 +65,12 @@ export function NavUser() {
                         <DropdownMenuSeparator />
                         <DropdownMenuSeparator />
                         <DropdownMenuGroup>
-                            <DropdownMenuItem className="flex items-center gap-2 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors rounded-md px-3 py-2 cursor-pointer">
-                                <BadgeCheck />
-                                Account
-                            </DropdownMenuItem>
+                            <Link to="/account" className="w-full">
+                                <DropdownMenuItem className="flex items-center gap-2 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors rounded-md px-3 py-2 cursor-pointer w-full">
+                                    <BadgeCheck />
+                                    Mon compte
+                                </DropdownMenuItem>
+                            </Link>
                         </DropdownMenuGroup>
                         <DropdownMenuSeparator />
                         <DropdownMenuItem >
