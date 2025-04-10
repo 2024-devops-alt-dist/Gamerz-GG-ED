@@ -8,6 +8,7 @@ import PrivateRoute from "./utils/PrivateRoute";
 import Admin from "@/pages/admin/Admin";
 import ProtectAdminRoute from "./utils/ProtectAdminRoute";
 import ChatRoomPage from "@/pages/chatRoom/ChatRoomPage.tsx";
+import AccountPage from "@/pages/account/AccountPage.tsx";
 
 function MainRouter() {
   return (
@@ -18,6 +19,8 @@ function MainRouter() {
           <Route element={<PrivateRoute />}>
             <Route path="/" element={<App />} />
             <Route path="/rooms/:id" element={<ChatRoomPage />} />
+            <Route path="/account" element={<AccountPage />} />
+
             {/* 🔹 Route protégée admin*/}
             <Route element={<ProtectAdminRoute />}>
               <Route path="/admin" element={<Admin />} />
