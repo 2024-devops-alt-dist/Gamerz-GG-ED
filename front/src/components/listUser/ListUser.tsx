@@ -1,16 +1,17 @@
 /* eslint-disable @typescript-eslint/no-unused-expressions */
 import { useEffect, useState } from "react";
-import DataTableUsers from "../dataTable/dataTableUsers/DataTableUsers";
 import UserService from "@/services/UserService";
 import userI from "@/interfaces/userI";
-import { columns } from "../dataTable/dataTableUsers/Column";
 import { ListUserType } from "@/interfaces/Iglobal";
+import { columnDefaut } from "@/components/dataTable/dataTableUsers/columns/ColumnDefaut";
+import DataTableUsers from "@/components/dataTable/dataTableUsers/DataTableUsers";
 
 interface ListUserProps {
   type: ListUserType;
+  variant?: "defaut" | "";
 }
 
-function ListUser({ type }: ListUserProps) {
+function ListUser({ type, variant = "defaut" }: ListUserProps) {
   const [userService] = useState(new UserService());
   const [users, setUsers] = useState<userI[] | null>([]);
   const [usersPending, setUsersPending] = useState<userI[] | null>([]);
@@ -49,7 +50,7 @@ function ListUser({ type }: ListUserProps) {
     else return;
   }, [type]);
 
-  const columnsConfig = columns({
+  const columnsConfigDefaut = columnDefaut({
     statusSelections,
     setStatusSelections,
     banedSelections,
@@ -67,7 +68,7 @@ function ListUser({ type }: ListUserProps) {
         statusSelections={statusSelections}
         setStatusSelections={setStatusSelections}
         refresh={refresh}
-        columns={columnsConfig}
+        columns={columnsConfigDefaut}
         data={
           type === "all" && users
             ? users

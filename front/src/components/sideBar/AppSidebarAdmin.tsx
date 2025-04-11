@@ -14,9 +14,9 @@ import {
   SidebarMenuSubItem,
   SidebarRail,
 } from "@/components/ui/sidebar";
-import ListUser from "../listUser/ListUser";
-import { NavUser } from "@/pages/home/component/NavUser.tsx";
-import ListRooms from "../listRooms/ListRooms";
+import { NavUser } from "@/components/sideBar/molecules/NavUser";
+import ListUser from "@/components/listUser/ListUser";
+import ListRooms from "@/components/listRooms/ListRooms";
 
 const data = {
   navMain: [
@@ -45,7 +45,7 @@ interface AppSidebarProps {
   onSelectComponent: (component: () => React.ReactElement) => void;
 }
 
-const AppSidebar = ({ onSelectComponent, ...props }: AppSidebarProps) => {
+const AppSidebarAdmin = ({ onSelectComponent, ...props }: AppSidebarProps) => {
   return (
     <Sidebar {...props}>
       <SidebarHeader>
@@ -104,4 +104,4 @@ const AppSidebar = ({ onSelectComponent, ...props }: AppSidebarProps) => {
     </Sidebar>
   );
 };
-export default AppSidebar;
+export default AppSidebarAdmin;

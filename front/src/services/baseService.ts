@@ -14,7 +14,7 @@ class BaseService<T> {
     return resp;
   }
 
-  async getAll() {
+  async getAll(): Promise<T[]> {
     const resp = await axios.get(`${this.API_URL}`, {
       withCredentials: true,
     });

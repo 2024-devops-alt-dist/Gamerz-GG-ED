@@ -14,16 +14,18 @@ import IRoom from "@/interfaces/IRoom";
 import RoomService from "@/services/roomService";
 import { useState } from "react";
 
-interface DialogDestructRoomProps {
+interface DialogRoomProps {
+  type: "destruct" | "join";
   rooms: IRoom[];
   refresh: () => void;
   setSelections: React.Dispatch<React.SetStateAction<Record<string, boolean>>>;
 }
-const DialogDestructRoom = ({
+const DialogRoom = ({
+  type,
   rooms: rooms,
   refresh,
   setSelections,
-}: DialogDestructRoomProps) => {
+}: DialogRoomProps) => {
   const [roomService] = useState(new RoomService());
   console.log(rooms);
 
@@ -31,11 +33,19 @@ const DialogDestructRoom = ({
     try {
       const ids = rooms.map((room) => room._id);
       if (!ids || ids.length === 0) return;
-      roomService.deleteByIds(ids).then((resp) => {
-        console.log(resp);
-        refresh();
-        setSelections({});
-      });
+      if (type === "destruct") {
+        roomService.deleteByIds(ids).then((resp) => {
+          console.log(resp);
+          refresh();
+          setSelections({});
+        });
+      } else {
+        roomService.joinRooms(ids).then((resp) => {
+          console.log(resp);
+          refresh();
+          setSelections({});
+        });
+      }
     } catch (error) {
       console.log(error);
     }
@@ -44,16 +54,17 @@ const DialogDestructRoom = ({
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>
-        <Button>Suppression</Button>
+        <Button>{type === "destruct" ? "Suppression" : "Rejoindre"}</Button>
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle>
-            Êtes vous sur de vouloir supprimer :
+            Êtes vous sur de vouloir{" "}
+            {type === "destruct" ? "supprimmer" : "rejoindre"} :
             {Array.isArray(rooms) && rooms.length > 0 ? (
               rooms.map((room) => <p key={room.game}>{room.game}</p>)
             ) : (
-              <p>Aucun utilisateur sélectionné</p>
+              <p>Aucun salons sélectionné</p>
             )}
           </AlertDialogTitle>
           <AlertDialogDescription>
@@ -70,4 +81,4 @@ const DialogDestructRoom = ({
     </AlertDialog>
   );
 };
-export default DialogDestructRoom;
+export default DialogRoom;

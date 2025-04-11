@@ -9,7 +9,7 @@ type columnRoomProps = {
     React.SetStateAction<Record<string, boolean>>
   >;
 };
-export const columnRoom = ({
+export const columnRoomAdmin = ({
   deleteSelections,
   setDeleteSelections,
 }: columnRoomProps): ColumnDef<IRoom>[] => {

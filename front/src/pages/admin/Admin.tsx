@@ -1,9 +1,13 @@
-import {Separator} from "@/components/ui/separator";
-import {SidebarInset, SidebarProvider, SidebarTrigger,} from "@/components/ui/sidebar";
-import {ReactElement, useState} from "react";
-import AppSidebar from "./components/dataTable/app-sidebar";
-import {Button} from "@/components/ui/button";
-import {useNavigate} from "react-router-dom";
+import AppSidebarAdmin from "@/components/sideBar/AppSidebarAdmin";
+import { Separator } from "@/components/ui/separator";
+import {
+  SidebarInset,
+  SidebarProvider,
+  SidebarTrigger,
+} from "@/components/ui/sidebar";
+import { ReactElement, useState } from "react";
+import { Button } from "@/components/ui/button";
+import { useNavigate } from "react-router-dom";
 
 const Admin = () => {
   const [activeComponent, setActiveComponent] = useState<ReactElement | null>(
@@ -22,7 +26,7 @@ const Admin = () => {
 
   return (
     <SidebarProvider>
-      <AppSidebar onSelectComponent={setActiveComponent} />
+      <AppSidebarAdmin onSelectComponent={setActiveComponent} />
       <SidebarInset>
         <header className="flex h-16 shrink-0 items-center gap-2 border-b">
           <div className="flex items-center gap-2 px-3">
@@ -30,16 +34,17 @@ const Admin = () => {
             <Separator orientation="vertical" className="mr-2 h-4" />
           </div>
           <Button
-              onClick={handleGoHome}
-              variant="outline"
-              className="text-sm transition-all duration-200 hover:scale-[1.02] hover:bg-primary/10"
+            onClick={handleGoHome}
+            variant="outline"
+            className="text-sm transition-all duration-200 hover:scale-[1.02] hover:bg-primary/10"
           >
             Accueil
           </Button>
         </header>
-        <div className={`flex flex-1 flex-col gap-4 p-4 min-h-[100vh] rounded-xl bg-muted/50 md:min-h-min transition-opacity duration-300 ${
-                isFading ? "opacity-0" : "opacity-100"
-            }`}
+        <div
+          className={`flex flex-1 flex-col gap-4 p-4 min-h-[100vh] rounded-xl bg-muted/50 md:min-h-min transition-opacity duration-300 ${
+            isFading ? "opacity-0" : "opacity-100"
+          }`}
         >
           {activeComponent ? (
             activeComponent

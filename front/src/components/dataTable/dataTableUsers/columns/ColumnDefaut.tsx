@@ -17,7 +17,7 @@ type columnsProps = {
     React.SetStateAction<Record<string, boolean>>
   >;
 };
-export const columns = ({
+export const columnDefaut = ({
   statusSelections,
   setStatusSelections,
   banedSelections,

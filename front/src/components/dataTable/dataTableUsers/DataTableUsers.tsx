@@ -16,21 +16,21 @@ import {
 import { useState } from "react";
 import AdminService from "@/services/adminService";
 import { Button } from "@/components/ui/button";
-import DialogDestructUser from "./DialogDestructUser";
+import DialogDestructUser from "../../dialog/DialogDestructUser";
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
   refresh: () => void;
-  setStatusSelections: React.Dispatch<
+  setStatusSelections?: React.Dispatch<
     React.SetStateAction<Record<string, boolean>>
   >;
-  statusSelections: Record<string, boolean>;
-  setBanedSelections: React.Dispatch<
+  statusSelections?: Record<string, boolean>;
+  setBanedSelections?: React.Dispatch<
     React.SetStateAction<Record<string, boolean>>
   >;
-  banedSelections: Record<string, boolean>;
-  deleteSelections: Record<string, boolean>;
-  setDeleteSelections: React.Dispatch<
+  banedSelections?: Record<string, boolean>;
+  deleteSelections?: Record<string, boolean>;
+  setDeleteSelections?: React.Dispatch<
     React.SetStateAction<Record<string, boolean>>
   >;
 }
@@ -62,27 +62,28 @@ const DataTableUsers = <TData, TValue>({
   });
 
   const onValidate = () => {
-    const tableRows = table.getRowModel().rows;
+    if (setStatusSelections && statusSelections) {
+      const tableRows = table.getRowModel().rows;
+      const selectedUsers = tableRows
+        .filter((row) => statusSelections[row.id])
+        .map((row) => row.original);
 
-    const selectedUsers = tableRows
-      .filter((row) => statusSelections[row.id])
-      .map((row) => row.original);
+      const ids = selectedUsers.map((user) => user._id);
 
-    const ids = selectedUsers.map((user) => user._id);
-
-    if (ids.length === 0) return;
-    try {
-      adminService.validate(ids).then(() => {
-        refresh();
-        setStatusSelections({});
-      });
-    } catch (error) {
-      console.log(error);
+      if (ids.length === 0) return;
+      try {
+        adminService.validate(ids).then(() => {
+          refresh();
+          setStatusSelections({});
+        });
+      } catch (error) {
+        console.log(error);
+      }
     }
   };
   const getUsersFromSelection = (selection: Record<string, boolean>) => {
     const tableRows = table.getRowModel().rows;
-
+    if (!selection) return [];
     const selectedUsers = tableRows
       .filter((row) => selection[row.id])
       .map((row) => row.original);
@@ -146,27 +147,31 @@ const DataTableUsers = <TData, TValue>({
         </Table>
       </div>
       <div className="flex justify-end mt-4">
-        {Object.keys(statusSelections).length > 0 && (
+        {statusSelections && Object.keys(statusSelections).length > 0 && (
           <Button disabled={data.length <= 0} onClick={onValidate}>
             Approuver
           </Button>
         )}
-        {Object.keys(banedSelections).length > 0 && (
-          <DialogDestructUser
-            actionType={"ban"}
-            setSelections={setBanedSelections}
-            refresh={refresh}
-            users={getUsersFromSelection(banedSelections)}
-          />
-        )}
-        {Object.keys(deleteSelections).length > 0 && (
-          <DialogDestructUser
-            actionType={"delete"}
-            setSelections={setDeleteSelections}
-            refresh={refresh}
-            users={getUsersFromSelection(deleteSelections)}
-          />
-        )}
+        {setBanedSelections &&
+          banedSelections &&
+          Object.keys(banedSelections).length > 0 && (
+            <DialogDestructUser
+              actionType={"ban"}
+              setSelections={setBanedSelections}
+              refresh={refresh}
+              users={getUsersFromSelection(banedSelections)}
+            />
+          )}
+        {deleteSelections &&
+          setDeleteSelections &&
+          Object.keys(deleteSelections).length > 0 && (
+            <DialogDestructUser
+              actionType={"delete"}
+              setSelections={setDeleteSelections}
+              refresh={refresh}
+              users={getUsersFromSelection(deleteSelections)}
+            />
+          )}
       </div>
     </div>
   );

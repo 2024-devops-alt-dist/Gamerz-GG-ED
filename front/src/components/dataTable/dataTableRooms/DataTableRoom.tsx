@@ -13,19 +13,23 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import DialogDestructRoom from "./DialogDestructRoom";
 import { Button } from "@/components/ui/button";
 import RoomForm from "./RoomForm";
-import { useState } from "react";
-// import { Button } from "@/components/ui/button";
-// import DialogBanned from "../../DialogBanned";
+import { useContext, useState } from "react";
+import DialogRoom from "@/components/dialog/DialogRoom";
+import AuthContext from "@/context/AuthContext";
 
 interface DataTableRoomProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
   refresh: () => void;
-  deleteSelections: Record<string, boolean>;
-  setDeleteSelections: React.Dispatch<
+  deleteSelections?: Record<string, boolean>;
+  setDeleteSelections?: React.Dispatch<
+    React.SetStateAction<Record<string, boolean>>
+  >;
+
+  joinSelections?: Record<string, boolean>;
+  setJoinSelections?: React.Dispatch<
     React.SetStateAction<Record<string, boolean>>
   >;
 }
@@ -34,9 +38,12 @@ const DataTableRoom = <TData, TValue>({
   columns,
   deleteSelections,
   setDeleteSelections,
+  joinSelections,
+  setJoinSelections,
   refresh,
 }: DataTableRoomProps<TData, TValue>) => {
   const [isOnpen, setIsOpen] = useState(false);
+  const authContext = useContext(AuthContext);
   const table = useReactTable({
     data,
     columns,
@@ -44,6 +51,8 @@ const DataTableRoom = <TData, TValue>({
     meta: {
       deleteSelections,
       setDeleteSelections,
+      joinSelections,
+      setJoinSelections,
     },
   });
 
@@ -118,22 +127,37 @@ const DataTableRoom = <TData, TValue>({
             </Table>
           </div>
           <div className="flex justify-end mt-4">
-            {Object.keys(deleteSelections).length > 0 && (
-              <DialogDestructRoom
-                rooms={getUsersFromSelection(deleteSelections)}
-                refresh={refresh}
-                setSelections={setDeleteSelections}
-              />
-            )}
+            {deleteSelections &&
+              setDeleteSelections &&
+              Object.keys(deleteSelections).length > 0 && (
+                <DialogRoom
+                  type="destruct"
+                  rooms={getUsersFromSelection(deleteSelections)}
+                  refresh={refresh}
+                  setSelections={setDeleteSelections}
+                />
+              )}
+            {joinSelections &&
+              setJoinSelections &&
+              Object.keys(joinSelections).length > 0 && (
+                <DialogRoom
+                  type="join"
+                  rooms={getUsersFromSelection(joinSelections)}
+                  refresh={refresh}
+                  setSelections={setJoinSelections}
+                />
+              )}
           </div>
         </div>
       ) : (
         <RoomForm setIsOpen={setIsOpen} refresh={refresh} />
       )}
       <div className="flex pt-3">
-        <Button className="m-auto" onClick={handleOpenFormCreateRoom}>
-          Création de salon
-        </Button>
+        {authContext?.user?.role === "admin" && (
+          <Button className="m-auto" onClick={handleOpenFormCreateRoom}>
+            Création de salon
+          </Button>
+        )}
       </div>
     </div>
   );
