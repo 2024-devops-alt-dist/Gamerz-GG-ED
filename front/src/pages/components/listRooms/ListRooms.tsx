@@ -1,11 +1,14 @@
 /* eslint-disable @typescript-eslint/no-unused-expressions */
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 // import DataTableUsers from "../dataTable/dataTableUsers/DataTableUsers";
 // import { columns } from "../dataTable/dataTableUsers/Column";
 import IRoom from "@/interfaces/IRoom";
 import RoomService from "@/services/roomService";
-import { columnRoom } from "../dataTable/dataTableRooms/ColumnRoom";
-import DataTableRoom from "../dataTable/dataTableRooms/DataTableRoom";
+
+import AuthContext from "@/context/AuthContext";
+import { columnRoomAdmin } from "@/components/dataTable/dataTableRooms/column/ColumnRoomAdmin";
+import DataTableRoom from "@/components/dataTable/dataTableRooms/DataTableRoom";
+import { columnRoom } from "@/components/dataTable/dataTableRooms/column/ColumnRoom";
 
 interface ListRoomsProps {
   variant?: "admin" | "";
@@ -15,6 +18,8 @@ function ListRooms({ variant = "admin" }: ListRoomsProps) {
   const [roomService] = useState(new RoomService());
   const [rooms, setRooms] = useState<IRoom[] | []>([]);
   const [deleteSelections, setDeleteSelections] = useState({});
+  const [joinSelections, setJoinSelections] = useState({});
+  const authContext = useContext(AuthContext);
 
   async function getAllRooms() {
     try {
@@ -24,18 +29,36 @@ function ListRooms({ variant = "admin" }: ListRoomsProps) {
       console.log(error);
     }
   }
+  async function getAllWithoutRoomsByUserId() {
+    try {
+      const userId = authContext?.user?._id;
+      const resp = await roomService.getWithoutByUserId(userId);
+      setRooms(resp);
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   const refresh = () => {
-    getAllRooms();
+    if (variant === "admin") {
+      getAllRooms();
+    } else {
+      getAllWithoutRoomsByUserId();
+    }
   };
 
   useEffect(() => {
     refresh();
   }, []);
 
-  const columnsConfig = columnRoom({
+  const columnsConfigAdmin = columnRoomAdmin({
     deleteSelections,
     setDeleteSelections,
+  });
+
+  const columnsConfig = columnRoom({
+    joinSelections,
+    setJoinSelections,
   });
 
   return (
@@ -44,7 +67,7 @@ function ListRooms({ variant = "admin" }: ListRoomsProps) {
         setDeleteSelections={setDeleteSelections}
         deleteSelections={deleteSelections}
         refresh={refresh}
-        columns={columnsConfig}
+        columns={variant === "admin" ? columnsConfigAdmin : columnsConfig}
         data={rooms}
       />
     </div>

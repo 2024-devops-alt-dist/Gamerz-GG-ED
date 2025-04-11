@@ -13,7 +13,7 @@ import {
   SidebarTrigger,
 } from "@/components/ui/sidebar.tsx";
 import { useState } from "react";
-import ListRooms from "../admin/components/listRooms/ListRooms.tsx";
+import ListRooms from "../components/listRooms/ListRooms.tsx";
 
 export default function HomePage() {
   const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -52,7 +52,7 @@ export default function HomePage() {
               <>
                 <div className="flex flex-col w-full">
                   <h2 className="m-auto">Rejoindre un Salon</h2>
-                  <ListRooms />
+                  <ListRooms variant="" />
                 </div>
               </>
             )}

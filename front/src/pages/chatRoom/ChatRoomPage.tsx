@@ -1,5 +1,4 @@
 import { useParams } from "react-router-dom";
-import { AppSidebar } from "@/pages/home/component/AppSidebar";
 import {
   SidebarInset,
   SidebarProvider,
@@ -15,6 +14,7 @@ import {
   BreadcrumbList,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb.tsx";
+import { AppSidebar } from "../home/component/AppSidebar";
 
 export default function ChatRoomPage() {
   const { id: roomId } = useParams();

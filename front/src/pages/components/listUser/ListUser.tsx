@@ -1,10 +1,10 @@
 /* eslint-disable @typescript-eslint/no-unused-expressions */
 import { useEffect, useState } from "react";
-import DataTableUsers from "../dataTable/dataTableUsers/DataTableUsers";
 import UserService from "@/services/UserService";
 import userI from "@/interfaces/userI";
 import { ListUserType } from "@/interfaces/Iglobal";
-import { columnDefaut } from "../dataTable/dataTableUsers/ColumnDefaut";
+import { columnDefaut } from "@/components/dataTable/dataTableUsers/ColumnDefaut";
+import DataTableUsers from "@/components/dataTable/dataTableUsers/DataTableUsers";
 
 interface ListUserProps {
   type: ListUserType;

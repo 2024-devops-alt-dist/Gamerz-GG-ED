@@ -1,6 +1,5 @@
 "use client";
 
-import React, { useState } from "react";
 import { NavUser } from "./NavUser.tsx";
 import {
   Sidebar,
@@ -13,12 +12,12 @@ import { NavMain } from "@/pages/home/component/NavMain.tsx";
 import { Button } from "@/components/ui/button.tsx";
 
 interface AppSidebarProps {
-  setIsOpen: (isOpen: boolean) => void;
-  isOpen: boolean;
+  setIsOpen?: (isOpen: boolean) => void;
+  isOpen?: boolean;
 }
 export function AppSidebar({ setIsOpen, isOpen }: AppSidebarProps) {
   const handleIsOpen = () => {
-    setIsOpen(!isOpen);
+    if (setIsOpen) setIsOpen(!isOpen);
   };
   return (
     <Sidebar collapsible="icon">

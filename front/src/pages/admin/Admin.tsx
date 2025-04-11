@@ -1,3 +1,4 @@
+import AppSidebar from "@/components/app-sidebar";
 import { Separator } from "@/components/ui/separator";
 import {
   SidebarInset,
@@ -5,7 +6,6 @@ import {
   SidebarTrigger,
 } from "@/components/ui/sidebar";
 import { ReactElement, useState } from "react";
-import AppSidebar from "./components/dataTable/app-sidebar";
 
 const Admin = () => {
   const [activeComponent, setActiveComponent] = useState<ReactElement | null>(

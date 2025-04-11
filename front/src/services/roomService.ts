@@ -46,6 +46,20 @@ class RoomService extends BaseService<IRoom> {
 
     return resp.data;
   }
+
+  async getByUserId(userId: string): Promise<IRoom[]> {
+    const resp = await axios.get(`${this.API}/by-user/${userId}`, {
+      withCredentials: true,
+    });
+    return resp.data;
+  }
+
+  async getWithoutByUserId(userId: string): Promise<IRoom[]> {
+    const resp = await axios.get(`${this.API}/without-user/${userId}`, {
+      withCredentials: true,
+    });
+    return resp.data;
+  }
 }
 
 export default RoomService;

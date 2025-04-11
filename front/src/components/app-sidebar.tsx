@@ -14,9 +14,9 @@ import {
   SidebarMenuSubItem,
   SidebarRail,
 } from "@/components/ui/sidebar";
-import ListUser from "../listUser/ListUser";
 import { NavUser } from "@/pages/home/component/NavUser.tsx";
-import ListRooms from "../listRooms/ListRooms";
+import ListUser from "@/pages/components/listUser/ListUser";
+import ListRooms from "@/pages/components/listRooms/ListRooms";
 
 const data = {
   navMain: [

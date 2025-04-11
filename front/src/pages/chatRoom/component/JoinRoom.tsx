@@ -1,8 +1,7 @@
 // import userI from "@/interfaces/userI";
 // import UserService from "@/services/UserService";
+import ListUser from "@/pages/components/listUser/ListUser";
 import { useState } from "react";
-
-import ListUser from "@/pages/admin/components/listUser/ListUser";
 
 interface JoinRoomProps {
   setIsOpen: () => void;

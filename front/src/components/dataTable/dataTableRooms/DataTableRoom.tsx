@@ -17,15 +17,18 @@ import DialogDestructRoom from "./DialogDestructRoom";
 import { Button } from "@/components/ui/button";
 import RoomForm from "./RoomForm";
 import { useState } from "react";
-// import { Button } from "@/components/ui/button";
-// import DialogBanned from "../../DialogBanned";
 
 interface DataTableRoomProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
   refresh: () => void;
-  deleteSelections: Record<string, boolean>;
-  setDeleteSelections: React.Dispatch<
+  deleteSelections?: Record<string, boolean>;
+  setDeleteSelections?: React.Dispatch<
+    React.SetStateAction<Record<string, boolean>>
+  >;
+
+  joinSelections?: Record<string, boolean>;
+  setJoinSelections?: React.Dispatch<
     React.SetStateAction<Record<string, boolean>>
   >;
 }
@@ -34,6 +37,8 @@ const DataTableRoom = <TData, TValue>({
   columns,
   deleteSelections,
   setDeleteSelections,
+  joinSelections,
+  setJoinSelections,
   refresh,
 }: DataTableRoomProps<TData, TValue>) => {
   const [isOnpen, setIsOpen] = useState(false);
@@ -44,6 +49,8 @@ const DataTableRoom = <TData, TValue>({
     meta: {
       deleteSelections,
       setDeleteSelections,
+      joinSelections,
+      setJoinSelections,
     },
   });
 
@@ -118,13 +125,15 @@ const DataTableRoom = <TData, TValue>({
             </Table>
           </div>
           <div className="flex justify-end mt-4">
-            {Object.keys(deleteSelections).length > 0 && (
-              <DialogDestructRoom
-                rooms={getUsersFromSelection(deleteSelections)}
-                refresh={refresh}
-                setSelections={setDeleteSelections}
-              />
-            )}
+            {deleteSelections &&
+              setDeleteSelections &&
+              Object.keys(deleteSelections).length > 0 && (
+                <DialogDestructRoom
+                  rooms={getUsersFromSelection(deleteSelections)}
+                  refresh={refresh}
+                  setSelections={setDeleteSelections}
+                />
+              )}
           </div>
         </div>
       ) : (
