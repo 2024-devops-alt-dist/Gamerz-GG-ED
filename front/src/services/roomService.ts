@@ -35,6 +35,20 @@ class RoomService extends BaseService<IRoom> {
     return resp.data;
   }
 
+  async joinRooms(
+    roomIds: string[]
+  ): Promise<{ message: string; rooms: IRoom[] }> {
+    const resp = await axios.post(
+      `${this.API}/join`,
+      { ids: roomIds },
+      {
+        withCredentials: true,
+      }
+    );
+
+    return resp.data;
+  }
+
   async leaveRoom(roomId: string): Promise<{ message: string }> {
     const resp = await axios.post(
       `${this.API}/${roomId}/leave`,
