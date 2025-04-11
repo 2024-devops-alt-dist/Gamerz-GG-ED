@@ -14,7 +14,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Toaster, toast } from "sonner";
 import { Card, CardHeader, CardTitle } from "@/components/ui/card";
-import roomFormShema from "../utils/roomFormShema";
+import roomFormShema from "../shema/roomFormShema";
 import RoomService from "@/services/roomService";
 import { useState } from "react";
 
