@@ -56,6 +56,17 @@ exports.getRoomByUserId = async (req, res) => {
   }
 };
 
+exports.getRoomWithoutByUserId = async (req, res) => {
+  try {
+    const room = await Room.find({ users: { $ne: req.user.id } });
+    if (!room) return res.status(404).json({ message: "Salon non trouvé" });
+
+    res.status(200).json(room);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
 exports.joinRoom = async (req, res) => {
   try {
     const room = await findRoomById(req.params.id);
