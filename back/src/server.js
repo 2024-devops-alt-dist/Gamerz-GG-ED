@@ -4,7 +4,7 @@ const http = require("http");
 const { Server } = require("socket.io");
 const socketHandler = require("./socketHandler");
 
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 5001;
 const PORT_FRONT = process.env.PORT_FRONT;
 
 connectDB()

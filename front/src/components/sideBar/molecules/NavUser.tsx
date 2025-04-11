@@ -1,6 +1,6 @@
-import { useContext } from "react";
-import { BadgeCheck, ChevronsUpDown, LogOut } from "lucide-react";
-
+import { useContext, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { BadgeCheck, ChevronsUpDown, LogOut, ShieldCheck } from "lucide-react";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import {
     DropdownMenu,
@@ -11,23 +11,31 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { SidebarMenu, SidebarMenuButton, SidebarMenuItem, useSidebar } from "@/components/ui/sidebar";
+import { SidebarMenu, SidebarMenuButton, SidebarMenuItem, useSidebar, } from "@/components/ui/sidebar";
 import AuthContext from "@/context/AuthContext";
 import Logout from "@/pages/auth/components/Logout.tsx";
 
 export function NavUser() {
     const { isMobile } = useSidebar();
     const authContext = useContext(AuthContext);
+    const [isFading, setIsFading] = useState(false);
+    const navigate = useNavigate();
 
     if (!authContext) {
         return <p>Erreur de contexte</p>;
     }
 
     const { user } = authContext;
-
     const userUsername = user?.username || "Utilisateur";
     const userEmail = user?.email || "Aucune email";
     const userInitial = userUsername.charAt(0).toUpperCase();
+
+    const handleFadeAndNavigate = (path: string) => {
+        setIsFading(true);
+        setTimeout(() => {
+            navigate(path);
+        }, 300);
+    };
 
     return (
         <SidebarMenu>
@@ -46,7 +54,9 @@ export function NavUser() {
                         </SidebarMenuButton>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent
-                        className="w-[--radix-dropdown-menu-trigger-width] min-w-56 rounded-lg"
+                        className={`w-[--radix-dropdown-menu-trigger-width] min-w-56 rounded-lg transition-opacity duration-300 ${
+                            isFading ? "opacity-0" : "opacity-100"
+                        }`}
                         side={isMobile ? "bottom" : "right"}
                         align="end"
                         sideOffset={4}
@@ -65,13 +75,25 @@ export function NavUser() {
                         <DropdownMenuSeparator />
                         <DropdownMenuSeparator />
                         <DropdownMenuGroup>
-                            <DropdownMenuItem className="flex items-center gap-2 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors rounded-md px-3 py-2 cursor-pointer">
+                            <DropdownMenuItem
+                                onClick={() => handleFadeAndNavigate("/account")}
+                                className="flex items-center gap-2 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors rounded-md px-3 py-2 cursor-pointer w-full"
+                            >
                                 <BadgeCheck />
-                                Account
+                                Mon compte
                             </DropdownMenuItem>
+                            {user?.role === "admin" && (
+                                <DropdownMenuItem
+                                    onClick={() => handleFadeAndNavigate("/admin")}
+                                    className="flex items-center gap-2 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors rounded-md px-3 py-2 cursor-pointer w-full"
+                                >
+                                    <ShieldCheck />
+                                    Admin Dashboard
+                                </DropdownMenuItem>
+                            )}
                         </DropdownMenuGroup>
                         <DropdownMenuSeparator />
-                        <DropdownMenuItem >
+                        <DropdownMenuItem>
                             <LogOut />
                             <Logout />
                         </DropdownMenuItem>

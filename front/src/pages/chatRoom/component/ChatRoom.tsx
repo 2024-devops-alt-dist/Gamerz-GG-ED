@@ -13,9 +13,7 @@ interface ChatRoomProps {
   roomId: string;
 }
 
-const socket: Socket = io("http://localhost:5001", {
-  withCredentials: true,
-});
+const socketUrl = import.meta.env.VITE_SOCKET_URL;
 
 const ChatRoom: React.FC<ChatRoomProps> = ({ roomId }) => {
   const { user, loading: authLoading } = useAuth();
@@ -23,8 +21,11 @@ const ChatRoom: React.FC<ChatRoomProps> = ({ roomId }) => {
   const [messages, setMessages] = useState<messageI[]>([]);
   const [room, setRoom] = useState<roomI | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
+  const [socketError, setSocketError] = useState<boolean>(false);
+  const [typingUser, setTypingUser] = useState<string | null>(null);
   const [isOpen, setIsOpen] = useState<boolean>();
   const bottomRef = useRef<HTMLDivElement>(null);
+  const socketRef = useRef<Socket | null>(null);
   const userId = user?._id;
 
   const handleIsOpen = () => {
@@ -32,8 +33,32 @@ const ChatRoom: React.FC<ChatRoomProps> = ({ roomId }) => {
   };
 
   useEffect(() => {
-    if (!roomId || !userId) return;
+    try {
+      const socket = io(socketUrl, {
+        withCredentials: true,
+        timeout: 3000,
+        reconnectionAttempts: 3,
+      });
 
+      socket.on("connect_error", () => {
+        setSocketError(true);
+        socket.disconnect();
+      });
+
+      socketRef.current = socket;
+    } catch {
+      setSocketError(true);
+    }
+
+    return () => {
+      socketRef.current?.disconnect();
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!roomId || !userId || socketError || !socketRef.current) return;
+
+    const socket = socketRef.current;
     socket.emit("joinRoom", { roomId, userId });
 
     const fetchData = async () => {
@@ -49,8 +74,7 @@ const ChatRoom: React.FC<ChatRoomProps> = ({ roomId }) => {
 
         setMessages(history);
         setRoom(roomData);
-      } catch (error) {
-        console.error("❌ Erreur chargement :", error);
+      } catch {
       } finally {
         setLoading(false);
       }
@@ -62,14 +86,32 @@ const ChatRoom: React.FC<ChatRoomProps> = ({ roomId }) => {
       setMessages((prev) => [...prev, msg]);
     });
 
+    socket.on("userTyping", ({ username }) => {
+      if (username !== user?.username) {
+        setTypingUser(username);
+        setTimeout(() => {
+          setTypingUser(null);
+        }, 3000);
+      }
+    });
+
     return () => {
       socket.off("newMessage");
+      socket.off("userTyping");
     };
-  }, [roomId, userId]);
+  }, [roomId, userId, socketError]);
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
+
+  if (socketError) {
+    return (
+      <div className="text-red-500 p-6">
+        ❌ Impossible de se connecter au serveur de chat.
+      </div>
+    );
+  }
 
   if (authLoading || loading) {
     return <div className="text-gray-100 p-6">🔄 Chargement du salon...</div>;
@@ -81,6 +123,18 @@ const ChatRoom: React.FC<ChatRoomProps> = ({ roomId }) => {
 
   if (!room) {
     return <div className="text-gray-100 p-6">❌ Salon introuvable</div>;
+  }
+
+  function handleSend() {
+    if (!message.trim() || !userId || socketError || !socketRef.current) return;
+
+    socketRef.current.emit("sendMessage", {
+      roomId,
+      userId,
+      content: message,
+    });
+
+    setMessage("");
   }
 
   return (
@@ -97,7 +151,6 @@ const ChatRoom: React.FC<ChatRoomProps> = ({ roomId }) => {
             <Button onClick={handleIsOpen}>Inviter des amis</Button>
           </div>
 
-          {/* Messages */}
           <div className="flex-1 overflow-y-auto px-6 py-4 space-y-3">
             {messages.map((msg) => {
               const isMe =
@@ -129,7 +182,7 @@ const ChatRoom: React.FC<ChatRoomProps> = ({ roomId }) => {
                   <div
                     className={`max-w-[70%] p-3 rounded-xl shadow-md transition-all duration-200 ${
                       isMe
-                        ? "bg-[#52525B] text-white" // gray-500
+                        ? "bg-[#52525B] text-white"
                         : "bg-[#2D2D2D] text-gray-200"
                     }`}
                   >
@@ -146,16 +199,30 @@ const ChatRoom: React.FC<ChatRoomProps> = ({ roomId }) => {
                 </div>
               );
             })}
+
+            {typingUser && (
+              <div className="text-sm text-gray-400 italic px-2">
+                {typingUser} est en train d’écrire...
+              </div>
+            )}
+
             <div ref={bottomRef} />
           </div>
 
-          {/* Input */}
           <div className="p-4 border-t ">
             <div className="flex gap-3 items-center">
               <input
                 type="text"
                 value={message}
-                onChange={(e) => setMessage(e.target.value)}
+                onChange={(e) => {
+                  setMessage(e.target.value);
+                  if (socketRef.current && user?.username) {
+                    socketRef.current.emit("typing", {
+                      roomId,
+                      username: user.username,
+                    });
+                  }
+                }}
                 onKeyDown={(e) => e.key === "Enter" && handleSend()}
                 placeholder="Ton message..."
                 className="flex-1 px-4 py-2 rounded-xl bg-[#1e1e1e] text-white placeholder-gray-500 border border-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-500 transition"
@@ -174,18 +241,6 @@ const ChatRoom: React.FC<ChatRoomProps> = ({ roomId }) => {
       )}
     </div>
   );
-
-  function handleSend() {
-    if (!message.trim() || !userId) return;
-
-    socket.emit("sendMessage", {
-      roomId,
-      userId,
-      content: message,
-    });
-
-    setMessage("");
-  }
 };
 
 export default ChatRoom;
