@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import { NavUser } from "./NavUser.tsx";
 import {
   Sidebar,
@@ -10,15 +10,24 @@ import {
   SidebarRail,
 } from "@/components/ui/sidebar.tsx";
 import { NavMain } from "@/pages/home/component/NavMain.tsx";
+import { Button } from "@/components/ui/button.tsx";
 
-export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+interface AppSidebarProps {
+  setIsOpen: (isOpen: boolean) => void;
+  isOpen: boolean;
+}
+export function AppSidebar({ setIsOpen, isOpen }: AppSidebarProps) {
+  const handleIsOpen = () => {
+    setIsOpen(!isOpen);
+  };
   return (
-    <Sidebar collapsible="icon" {...props}>
+    <Sidebar collapsible="icon">
       <SidebarHeader />
       <SidebarContent>
         <NavMain />
       </SidebarContent>
       <SidebarFooter>
+        <Button onClick={handleIsOpen}>Rejoindre un Salon</Button>
         <NavUser />
       </SidebarFooter>
       <SidebarRail />

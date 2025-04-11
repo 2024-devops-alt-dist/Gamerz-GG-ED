@@ -7,7 +7,11 @@ import RoomService from "@/services/roomService";
 import { columnRoom } from "../dataTable/dataTableRooms/ColumnRoom";
 import DataTableRoom from "../dataTable/dataTableRooms/DataTableRoom";
 
-function ListRooms() {
+interface ListRoomsProps {
+  variant?: "admin" | "";
+}
+
+function ListRooms({ variant = "admin" }: ListRoomsProps) {
   const [roomService] = useState(new RoomService());
   const [rooms, setRooms] = useState<IRoom[] | []>([]);
   const [deleteSelections, setDeleteSelections] = useState({});
@@ -26,7 +30,7 @@ function ListRooms() {
   };
 
   useEffect(() => {
-    getAllRooms();
+    refresh();
   }, []);
 
   const columnsConfig = columnRoom({
