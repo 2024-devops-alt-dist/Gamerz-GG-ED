@@ -22,12 +22,11 @@ export function NavMain() {
 
   const fetchRooms = async () => {
     try {
-      const result = await roomService.getAll();
-      const roomsUser = result.filter((room) =>
-        room.users?.some((u) => u._id === authContext?.user?._id)
-      );
+      const userId = authContext?.user?._id;
+      const result = await roomService.getByUserId(userId);
+      console.log(result);
 
-      if (roomsUser) setRooms(roomsUser);
+      setRooms(result);
     } catch (err) {
       console.error("Erreur chargement des rooms", err);
     }
@@ -40,18 +39,22 @@ export function NavMain() {
     <SidebarGroup>
       <SidebarGroupLabel>Salons</SidebarGroupLabel>
       <SidebarMenu>
-        {rooms.map((room) => (
-          <SidebarMenuItem key={room._id}>
-            <SidebarMenuButton
-              tooltip={room.game}
-              onClick={() => navigate(`/rooms/${room._id}`)}
-              className="flex items-center cursor-pointer"
-            >
-              <Gamepad2 className="mr-2 h-4 w-4" />
-              <span className="leading-none">{room.game}</span>
-            </SidebarMenuButton>
-          </SidebarMenuItem>
-        ))}
+        {rooms.map((room) => {
+          console.log(room);
+
+          return (
+            <SidebarMenuItem key={room._id}>
+              <SidebarMenuButton
+                tooltip={room.game}
+                onClick={() => navigate(`/rooms/${room._id}`)}
+                className="flex items-center cursor-pointer"
+              >
+                <Gamepad2 className="mr-2 h-4 w-4" />
+                <span className="leading-none">{room.game}</span>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+          );
+        })}
       </SidebarMenu>
     </SidebarGroup>
   );

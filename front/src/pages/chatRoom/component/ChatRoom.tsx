@@ -75,6 +75,7 @@ const ChatRoom: React.FC<ChatRoomProps> = ({ roomId }) => {
         setMessages(history);
         setRoom(roomData);
       } catch {
+        console.log("error");
       } finally {
         setLoading(false);
       }

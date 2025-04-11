@@ -80,28 +80,6 @@ const RoomForm = ({ refresh, setIsOpen }: RoomFormProps) => {
                 </FormItem>
               )}
             />
-
-            {/* <FormField
-              control={form.control}
-              name="password"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="text-gray-300">Mot de passe</FormLabel>
-                  <FormControl>
-                    <PasswordField
-                      showPassword={false}
-                      {...field}
-                      className="w-full bg-[#23272A] text-white border border-gray-600 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 rounded-md px-4 py-2 transition-all"
-                    />
-                  </FormControl>
-                  <FormDescription className="text-gray-400 text-sm">
-                    Saisissez votre mot de passe pour accéder à votre compte.
-                  </FormDescription>
-                  <FormMessage />
-                </FormItem>
-              )}
-            /> */}
-
             <Button className="w-full bg-blue-600 hover:bg-blue-700 transition-all py-2 rounded-md text-white font-semibold">
               Créer
             </Button>

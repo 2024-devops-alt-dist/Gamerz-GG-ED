@@ -9,7 +9,6 @@ import Admin from "@/pages/admin/Admin";
 import ProtectAdminRoute from "./utils/ProtectAdminRoute";
 import ChatRoomPage from "@/pages/chatRoom/ChatRoomPage.tsx";
 import MainLayout from "@/components/MainLayout";
-import AccountPage from "@/pages/account/AccountPage.tsx";
 
 function MainRouter() {
   return (

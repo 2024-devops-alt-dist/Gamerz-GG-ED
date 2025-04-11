@@ -10,6 +10,7 @@ import {
 import { NavMain } from "@/components/sideBar/molecules/NavMain";
 import { Button } from "@/components/ui/button.tsx";
 import { NavUser } from "./molecules/NavUser";
+import { Gamepad2 } from "lucide-react";
 
 interface AppSidebarProps {
   setIsOpen?: (isOpen: boolean) => void;
@@ -17,9 +18,7 @@ interface AppSidebarProps {
 }
 export function AppSidebar({ setIsOpen, isOpen }: AppSidebarProps) {
   const handleIsOpen = () => {
-    console.log(isOpen);
     setIsOpen?.(!isOpen);
-    console.log(isOpen);
   };
   return (
     <Sidebar collapsible="icon">
@@ -28,6 +27,7 @@ export function AppSidebar({ setIsOpen, isOpen }: AppSidebarProps) {
         <NavMain />
       </SidebarContent>
       <SidebarFooter>
+        <Gamepad2 className="mr-2 h-4 w-4" />
         <Button onClick={handleIsOpen}>Rejoindre un Salon</Button>
         <NavUser />
       </SidebarFooter>

@@ -3,6 +3,14 @@ import { SidebarInset, SidebarProvider, SidebarTrigger } from "./ui/sidebar";
 import { AppSidebar } from "@/components/sideBar/AppSidebar";
 import { useState } from "react";
 import { Outlet } from "react-router-dom";
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb.tsx";
+import { Separator } from "@/components/ui/separator.tsx";
 
 function MainLayout() {
   const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -15,6 +23,23 @@ function MainLayout() {
           <header className="flex h-16 shrink-0 items-center gap-2 border-b">
             <div className="flex items-center gap-2 px-3">
               <SidebarTrigger />
+              <Separator
+                orientation="vertical"
+                className="mr-2 h-4 border-gray-500"
+              />
+              <Breadcrumb>
+                <BreadcrumbList className="flex items-center gap-2">
+                  <BreadcrumbSeparator className="hidden md:block text-gray-400" />
+                  <BreadcrumbItem>
+                    <BreadcrumbLink
+                      href="/"
+                      className="font-semibold px-3 py-1 rounded-md  transition-all"
+                    >
+                      Accueil
+                    </BreadcrumbLink>
+                  </BreadcrumbItem>
+                </BreadcrumbList>
+              </Breadcrumb>
             </div>
           </header>
           <div className="flex flex-1 flex-col gap-4 p-4 min-h-[100vh] rounded-xl bg-muted/50 md:min-h-min">
