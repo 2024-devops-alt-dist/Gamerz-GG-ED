@@ -1,6 +1,5 @@
 "use client";
 
-import { NavUser } from "./NavUser.tsx";
 import {
   Sidebar,
   SidebarContent,
@@ -8,8 +7,9 @@ import {
   SidebarHeader,
   SidebarRail,
 } from "@/components/ui/sidebar.tsx";
-import { NavMain } from "@/pages/home/component/NavMain.tsx";
+import { NavMain } from "@/components/sideBar/molecules/NavMain";
 import { Button } from "@/components/ui/button.tsx";
+import { NavUser } from "./molecules/NavUser";
 
 interface AppSidebarProps {
   setIsOpen?: (isOpen: boolean) => void;
@@ -17,7 +17,9 @@ interface AppSidebarProps {
 }
 export function AppSidebar({ setIsOpen, isOpen }: AppSidebarProps) {
   const handleIsOpen = () => {
-    if (setIsOpen) setIsOpen(!isOpen);
+    console.log(isOpen);
+    setIsOpen?.(!isOpen);
+    console.log(isOpen);
   };
   return (
     <Sidebar collapsible="icon">

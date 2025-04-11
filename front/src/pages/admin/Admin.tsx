@@ -1,4 +1,4 @@
-import AppSidebar from "@/components/app-sidebar";
+import AppSidebarAdmin from "@/components/sideBar/AppSidebarAdmin";
 import { Separator } from "@/components/ui/separator";
 import {
   SidebarInset,
@@ -13,7 +13,7 @@ const Admin = () => {
   );
   return (
     <SidebarProvider>
-      <AppSidebar onSelectComponent={setActiveComponent} />
+      <AppSidebarAdmin onSelectComponent={setActiveComponent} />
       <SidebarInset>
         <header className="flex h-16 shrink-0 items-center gap-2 border-b">
           <div className="flex items-center gap-2 px-3">
