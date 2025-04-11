@@ -13,10 +13,11 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import DialogDestructRoom from "./DialogDestructRoom";
 import { Button } from "@/components/ui/button";
 import RoomForm from "./RoomForm";
-import { useState } from "react";
+import { useContext, useState } from "react";
+import DialogRoom from "@/components/dialog/DialogRoom";
+import AuthContext from "@/context/AuthContext";
 
 interface DataTableRoomProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -42,6 +43,7 @@ const DataTableRoom = <TData, TValue>({
   refresh,
 }: DataTableRoomProps<TData, TValue>) => {
   const [isOnpen, setIsOpen] = useState(false);
+  const authContext = useContext(AuthContext);
   const table = useReactTable({
     data,
     columns,
@@ -128,10 +130,21 @@ const DataTableRoom = <TData, TValue>({
             {deleteSelections &&
               setDeleteSelections &&
               Object.keys(deleteSelections).length > 0 && (
-                <DialogDestructRoom
+                <DialogRoom
+                  type="destruct"
                   rooms={getUsersFromSelection(deleteSelections)}
                   refresh={refresh}
                   setSelections={setDeleteSelections}
+                />
+              )}
+            {joinSelections &&
+              setJoinSelections &&
+              Object.keys(joinSelections).length > 0 && (
+                <DialogRoom
+                  type="join"
+                  rooms={getUsersFromSelection(joinSelections)}
+                  refresh={refresh}
+                  setSelections={setJoinSelections}
                 />
               )}
           </div>
@@ -140,9 +153,11 @@ const DataTableRoom = <TData, TValue>({
         <RoomForm setIsOpen={setIsOpen} refresh={refresh} />
       )}
       <div className="flex pt-3">
-        <Button className="m-auto" onClick={handleOpenFormCreateRoom}>
-          Création de salon
-        </Button>
+        {authContext?.user?.role === "admin" && (
+          <Button className="m-auto" onClick={handleOpenFormCreateRoom}>
+            Création de salon
+          </Button>
+        )}
       </div>
     </div>
   );

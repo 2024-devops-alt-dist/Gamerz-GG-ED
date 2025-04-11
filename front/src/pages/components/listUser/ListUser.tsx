@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import UserService from "@/services/UserService";
 import userI from "@/interfaces/userI";
 import { ListUserType } from "@/interfaces/Iglobal";
-import { columnDefaut } from "@/components/dataTable/dataTableUsers/ColumnDefaut";
+import { columnDefaut } from "@/components/dataTable/dataTableUsers/columns/ColumnDefaut";
 import DataTableUsers from "@/components/dataTable/dataTableUsers/DataTableUsers";
 
 interface ListUserProps {

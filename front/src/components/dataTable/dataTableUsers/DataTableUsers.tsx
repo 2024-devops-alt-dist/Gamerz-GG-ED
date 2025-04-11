@@ -16,7 +16,7 @@ import {
 import { useState } from "react";
 import AdminService from "@/services/adminService";
 import { Button } from "@/components/ui/button";
-import DialogDestructUser from "./DialogDestructUser";
+import DialogDestructUser from "../../dialog/DialogDestructUser";
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];

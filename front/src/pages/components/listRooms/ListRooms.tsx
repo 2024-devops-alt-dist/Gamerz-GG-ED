@@ -6,9 +6,9 @@ import IRoom from "@/interfaces/IRoom";
 import RoomService from "@/services/roomService";
 
 import AuthContext from "@/context/AuthContext";
-import { columnRoomAdmin } from "@/components/dataTable/dataTableRooms/column/ColumnRoomAdmin";
+import { columnRoomAdmin } from "@/components/dataTable/dataTableRooms/columns/ColumnRoomAdmin";
 import DataTableRoom from "@/components/dataTable/dataTableRooms/DataTableRoom";
-import { columnRoom } from "@/components/dataTable/dataTableRooms/column/ColumnRoom";
+import { columnRoom } from "@/components/dataTable/dataTableRooms/columns/ColumnRoom";
 
 interface ListRoomsProps {
   variant?: "admin" | "";
@@ -63,13 +63,23 @@ function ListRooms({ variant = "admin" }: ListRoomsProps) {
 
   return (
     <div className="container mx-auto py-10">
-      <DataTableRoom
-        setDeleteSelections={setDeleteSelections}
-        deleteSelections={deleteSelections}
-        refresh={refresh}
-        columns={variant === "admin" ? columnsConfigAdmin : columnsConfig}
-        data={rooms}
-      />
+      {variant === "admin" ? (
+        <DataTableRoom
+          setDeleteSelections={setDeleteSelections}
+          deleteSelections={deleteSelections}
+          refresh={refresh}
+          columns={columnsConfigAdmin}
+          data={rooms}
+        />
+      ) : (
+        <DataTableRoom
+          joinSelections={joinSelections}
+          setJoinSelections={setJoinSelections}
+          refresh={refresh}
+          columns={columnsConfig}
+          data={rooms}
+        />
+      )}
     </div>
   );
 }
