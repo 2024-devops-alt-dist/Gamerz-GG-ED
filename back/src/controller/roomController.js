@@ -85,6 +85,36 @@ exports.joinRoom = async (req, res) => {
   }
 };
 
+exports.joinRooms = async (req, res) => {
+  try {
+    const { ids } = req.body;
+    const updateRoom = [];
+
+    const rooms = await Room.find({ _id: { $in: ids } });
+    if (!rooms || rooms.length === 0) {
+      return res.status(404).json({ message: "Salon non trouvé" });
+    }
+    for (const room of rooms) {
+      if (!room.users.includes(req.user.id)) {
+        updateRoom.push(room);
+        room.users.push(req.user.id);
+        await room.save();
+      }
+    }
+    if (updateRoom.length === 0) {
+      return res
+        .status(400)
+        .json({ message: "Vous êtes déjà membre de tous les salons" });
+    }
+
+    res
+      .status(200)
+      .json({ message: "Vous avez rejoint le salon", rooms: updateRoom });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
 exports.leaveRoom = async (req, res) => {
   try {
     const room = await findRoomById(req.params.id);

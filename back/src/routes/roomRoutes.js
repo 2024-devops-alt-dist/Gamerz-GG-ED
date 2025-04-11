@@ -10,6 +10,7 @@ const {
   deleteRoom,
   getRoomByUserId,
   getRoomWithoutByUserId,
+  joinRooms,
 } = require("../controller/roomController");
 
 const router = express.Router();
@@ -20,6 +21,7 @@ router.get("/:id", authMiddleware, getRoomById);
 router.get("/by-user/:id", authMiddleware, getRoomByUserId);
 router.get("/without-user/:id", authMiddleware, getRoomWithoutByUserId);
 router.post("/:id/join", authMiddleware, joinRoom);
+router.post("/join", authMiddleware, joinRooms);
 router.post("/:id/leave", authMiddleware, leaveRoom);
 router.delete("/delete", authMiddleware, deleteRoom);
 
