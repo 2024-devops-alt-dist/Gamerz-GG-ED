@@ -86,7 +86,7 @@ const ChatRoom: React.FC<ChatRoomProps> = ({ roomId }) => {
   return (
     <div className="flex flex-col h-[calc(100vh-4rem)] ">
       {!isOpen ? (
-        <div>
+        <div className="flex flex-col justify-between h-full">
           {/* Header */}
           <div className="flex items-center gap-4 px-6 py-4 border-b border-gray-700">
             <MessageCircle className="text-gray-400 w-6 h-6" />
