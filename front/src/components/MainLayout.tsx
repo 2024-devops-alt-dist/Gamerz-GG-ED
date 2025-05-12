@@ -51,7 +51,7 @@ function MainLayout() {
               </Breadcrumb>
             </div>
           </header>
-          <div className="flex flex-1 flex-col gap-4 p-4 min-h-[100vh] rounded-xl bg-muted/50 md:min-h-min">
+          <div className="flex flex-1 flex-col gap-4 min-h-[100vh] rounded-xl bg-muted/50 md:min-h-min">
             {!isOpen ? <Outlet /> : <ListRooms variant="" />}
           </div>
         </SidebarInset>
