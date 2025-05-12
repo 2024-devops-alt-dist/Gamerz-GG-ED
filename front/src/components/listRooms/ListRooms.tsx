@@ -1,7 +1,4 @@
-/* eslint-disable @typescript-eslint/no-unused-expressions */
 import { useContext, useEffect, useState } from "react";
-// import DataTableUsers from "../dataTable/dataTableUsers/DataTableUsers";
-// import { columns } from "../dataTable/dataTableUsers/Column";
 import IRoom from "@/interfaces/IRoom";
 import RoomService from "@/services/roomService";
 
