@@ -54,7 +54,7 @@ const RegisterForm = () => {
   return (
     <>
       <Toaster position="top-right" richColors />
-      <Card className="p-10 w-[500px] mx-auto mt-5 shadow-lg dark:bg-background-dark  rounded-lg">
+      <Card className="p-10 w-[500px] mx-auto mt-5 shadow-lg rounded-lg">
         <CardHeader>
           <CardTitle className="text-2xl text-center font-semibold text-foreground dark:text-foreground-dark">
             Inscription
