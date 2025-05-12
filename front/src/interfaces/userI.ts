@@ -1,6 +1,5 @@
 interface userI {
-
-  _id: string;
+  _id?: string;
   username?: string;
   email?: string;
   motivation?: string;
