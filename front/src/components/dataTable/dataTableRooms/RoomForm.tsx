@@ -17,6 +17,7 @@ import { Card, CardHeader, CardTitle } from "@/components/ui/card";
 import roomFormShema from "../shema/roomFormShema";
 import RoomService from "@/services/roomService";
 import { useState } from "react";
+import { AxiosError } from "axios";
 
 interface RoomFormProps {
   refresh: () => void;
@@ -44,9 +45,12 @@ const RoomForm = ({ refresh, setIsOpen }: RoomFormProps) => {
       } else {
         toast.error("Une erreur est survenue");
       }
-    } catch (error) {
+    } catch (err: unknown) {
+      const error = err as AxiosError<{
+        message: string;
+      }>;
       if (error.status === 403) {
-        toast.error(error.response.data.message);
+        toast.error(error?.response?.data.message);
       }
     }
   }
@@ -54,9 +58,9 @@ const RoomForm = ({ refresh, setIsOpen }: RoomFormProps) => {
   return (
     <>
       <Toaster position="top-right" richColors />
-      <Card className="p-10 w-[400px] mx-auto mt-20 shadow-lg bg-[#2C2F33] text-white rounded-lg">
+      <Card className="p-10 w-[400px] mx-auto mt-20 shadow-lg bg-background dark:bg-background-dark text-white rounded-lg">
         <CardHeader>
-          <CardTitle className="text-2xl text-center font-semibold text-[#ffffff]">
+          <CardTitle className="text-2xl text-center font-semibold text-foreground dark:text-foreground-dark">
             Ajouter un salon
           </CardTitle>
         </CardHeader>

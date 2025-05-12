@@ -144,7 +144,7 @@ const ChatRoom: React.FC<ChatRoomProps> = ({ roomId }) => {
         <div className="flex flex-col justify-between h-full">
           {/* Header */}
           <div className="flex items-center gap-4 px-6 py-4 border-b border-gray-700">
-            <MessageCircle className="text-gray-400 w-6 h-6" />
+            <MessageCircle className="text-foreground w-6 h-6" />
             <h2 className="text-xl font-semibold text-gray-200 tracking-wide">
               {room.game}
             </h2>
@@ -202,7 +202,7 @@ const ChatRoom: React.FC<ChatRoomProps> = ({ roomId }) => {
             })}
 
             {typingUser && (
-              <div className="text-sm text-gray-400 italic px-2">
+              <div className="text-sm text-foreground italic px-2">
                 {typingUser} est en train d’écrire...
               </div>
             )}
@@ -210,7 +210,7 @@ const ChatRoom: React.FC<ChatRoomProps> = ({ roomId }) => {
             <div ref={bottomRef} />
           </div>
 
-          <div className="p-4 border-t ">
+          <div className="border-t ">
             <div className="flex gap-3 items-center">
               <input
                 type="text"
