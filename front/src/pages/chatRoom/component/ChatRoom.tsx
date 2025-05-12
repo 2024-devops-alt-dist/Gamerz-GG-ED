@@ -145,9 +145,7 @@ const ChatRoom: React.FC<ChatRoomProps> = ({ roomId }) => {
           {/* Header */}
           <div className="flex items-center gap-4 px-6 py-4 border-b border-gray-700">
             <MessageCircle className="text-foreground w-6 h-6" />
-            <h2 className="text-xl font-semibold text-gray-200 tracking-wide">
-              {room.game}
-            </h2>
+            <h2 className="text-xl font-semibold tracking-wide">{room.game}</h2>
             <span className="ml-auto text-sm text-gray-500">Salon actif</span>
             <Button onClick={handleIsOpen}>Inviter des amis</Button>
           </div>
@@ -182,9 +180,7 @@ const ChatRoom: React.FC<ChatRoomProps> = ({ roomId }) => {
                 >
                   <div
                     className={`max-w-[70%] p-3 rounded-xl shadow-md transition-all duration-200 ${
-                      isMe
-                        ? "bg-[#52525B] text-white"
-                        : "bg-[#2D2D2D] text-gray-200"
+                      isMe ? "bg-[#52525B] " : "bg-[#2D2D2D] text-gray-200"
                     }`}
                   >
                     <div className="text-xs text-gray-300 mb-1 font-semibold">
@@ -226,13 +222,13 @@ const ChatRoom: React.FC<ChatRoomProps> = ({ roomId }) => {
                 }}
                 onKeyDown={(e) => e.key === "Enter" && handleSend()}
                 placeholder="Ton message..."
-                className="flex-1 px-4 py-2 rounded-xl bg-[#1e1e1e] text-white placeholder-gray-500 border border-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-500 transition"
+                className="flex-1 px-4 py-2 rounded-xl bg-[#1e1e1e]  placeholder-gray-500 border border-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-500 transition"
               />
               <button
                 onClick={handleSend}
                 className="p-4 rounded-full bg-[#1f2532] hover:bg-[#2a3245] transition flex items-center justify-center border border-gray-700"
               >
-                <SendHorizonal className="w-5 h-5 text-white" />
+                <SendHorizonal className="w-5 h-5 " />
               </button>
             </div>
           </div>

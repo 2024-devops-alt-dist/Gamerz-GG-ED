@@ -9,7 +9,7 @@ const Admin = () => {
   return (
     <>
       <AppSidebarAdmin onSelectComponent={setActiveComponent} />
-      <div className="flex flex-1 flex-col gap-4">
+      <div className="flex flex-1 flex-col bg-background gap-4">
         {activeComponent ? (
           activeComponent
         ) : (

@@ -54,7 +54,7 @@ const RegisterForm = () => {
   return (
     <>
       <Toaster position="top-right" richColors />
-      <Card className="p-10 w-[500px] mx-auto mt-5 shadow-lg dark:bg-background-dark text-white rounded-lg">
+      <Card className="p-10 w-[500px] mx-auto mt-5 shadow-lg dark:bg-background-dark  rounded-lg">
         <CardHeader>
           <CardTitle className="text-2xl text-center font-semibold text-foreground dark:text-foreground-dark">
             Inscription
@@ -73,7 +73,7 @@ const RegisterForm = () => {
                       type="text"
                       placeholder="Nom"
                       {...field}
-                      className="w-full bg-backgroud text-white border border-gray-600 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 rounded-md px-4 py-2 transition-all"
+                      className="w-full bg-backgroud border border-gray-600 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 rounded-md px-4 py-2 transition-all"
                     />
                   </FormControl>
                   <FormDescription className="text-foreground text-sm">
@@ -95,7 +95,7 @@ const RegisterForm = () => {
                       type="email"
                       placeholder="Email"
                       {...field}
-                      className="w-full bg-backgroud text-white border border-gray-600 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 rounded-md px-4 py-2 transition-all"
+                      className="w-full bg-backgroud  border border-gray-600 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 rounded-md px-4 py-2 transition-all"
                     />
                   </FormControl>
                   <FormDescription className="text-foreground text-sm">
@@ -117,7 +117,7 @@ const RegisterForm = () => {
                       type="text"
                       placeholder="Pourquoi nous rejoindre ?"
                       {...field}
-                      className="w-full bg-backgroud text-white border border-gray-600 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 rounded-md px-4 py-2 transition-all"
+                      className="w-full bg-backgroud  border border-gray-600 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 rounded-md px-4 py-2 transition-all"
                     />
                   </FormControl>
                   <FormDescription className="text-foreground text-sm">
@@ -138,7 +138,7 @@ const RegisterForm = () => {
                     <PasswordField
                       showPassword={false}
                       {...field}
-                      className="w-full bg-backgroud text-white border border-gray-600 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 rounded-md px-4 py-2 transition-all"
+                      className="w-full bg-backgroud  border border-gray-600 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 rounded-md px-4 py-2 transition-all"
                     />
                   </FormControl>
                   <FormDescription className="text-foreground text-sm">
@@ -162,7 +162,7 @@ const RegisterForm = () => {
                     <PasswordField
                       showPassword={false}
                       {...field}
-                      className="w-full bg-backgroud text-white border border-gray-600 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 rounded-md px-4 py-2 transition-all"
+                      className="w-full bg-backgroud  border border-gray-600 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 rounded-md px-4 py-2 transition-all"
                     />
                   </FormControl>
                   <FormDescription className="text-foreground text-sm">
@@ -173,13 +173,13 @@ const RegisterForm = () => {
               )}
             />
 
-            <Button className="w-full bg-green-600 hover:bg-green-700 transition-all py-2 rounded-md text-white font-semibold">
+            <Button className="w-full bg-green-600 hover:bg-green-700 transition-all py-2 rounded-md  font-semibold">
               S'inscrire
             </Button>
 
             <Button
               onClick={() => navigate("/login")}
-              className="w-full mt-2 bg-gray-700 hover:bg-gray-600 transition-all py-2 rounded-md text-white font-semibold"
+              className="w-full mt-2 hover:bg-gray-600 transition-all py-2 rounded-md  font-semibold"
             >
               🔑 J'ai déjà un compte
             </Button>

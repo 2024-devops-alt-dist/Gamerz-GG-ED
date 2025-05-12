@@ -62,9 +62,9 @@ const LoginForm = () => {
   return (
     <>
       <Toaster position="top-right" richColors />
-      <Card className="p-10 w-[400px] mx-auto mt-20 shadow-lg dark:bg-background-dark text-white rounded-lg">
+      <Card className="p-10 w-[400px] mx-auto mt-20 shadow-lg rounded-lg">
         <CardHeader>
-          <CardTitle className="text-2xl text-center font-semibold text-foreground dark:text-foreground-dark">
+          <CardTitle className="text-2xl text-center font-semibold text-foreground">
             Connexion
           </CardTitle>
         </CardHeader>
@@ -81,7 +81,7 @@ const LoginForm = () => {
                       type="email"
                       placeholder="Votre email"
                       {...field}
-                      className="w-full bg-backgroud text-white border border-gray-600 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 rounded-md px-4 py-2 transition-all"
+                      className="w-full bg-backgroud  border border-gray-600 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 rounded-md px-4 py-2 transition-all"
                     />
                   </FormControl>
                   <FormDescription className="text-foreground text-sm">
@@ -102,7 +102,7 @@ const LoginForm = () => {
                     <PasswordField
                       showPassword={false}
                       {...field}
-                      className="w-full bg-backgroud text-white border border-gray-600 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 rounded-md px-4 py-2 transition-all"
+                      className="w-full bg-backgroud  border border-gray-600 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 rounded-md px-4 py-2 transition-all"
                     />
                   </FormControl>
                   <FormDescription className="text-foreground text-sm">
@@ -122,7 +122,7 @@ const LoginForm = () => {
               </a>
             </div>
 
-            <Button className="w-full bg-blue-600 hover:bg-blue-700 transition-all py-2 rounded-md text-white font-semibold">
+            <Button className="w-full bg-blue-600 hover:bg-blue-700 transition-all py-2 rounded-md  font-semibold">
               Se connecter
             </Button>
           </form>
