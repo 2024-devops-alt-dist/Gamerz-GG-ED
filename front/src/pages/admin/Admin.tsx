@@ -1,7 +1,7 @@
 import { ReactElement, useState } from "react";
 import AppSidebarAdmin from "@/components/sideBar/AppSidebarAdmin";
 
-const AdminWrapper = () => {
+const Admin = () => {
   const [activeComponent, setActiveComponent] = useState<ReactElement | null>(
     null
   );
@@ -20,4 +20,4 @@ const AdminWrapper = () => {
   );
 };
 
-export default AdminWrapper;
+export default Admin;
