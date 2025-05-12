@@ -53,7 +53,7 @@ function MainLayout() {
             </div>
             <ToggleTheme />
           </header>
-          <div className="flex flex-1 flex-col gap-4 min-h-[100vh] md:min-h-min">
+          <div className="flex flex-1 flex-col gap-4">
             {!isOpen ? <Outlet /> : <ListRooms variant="" />}
           </div>
         </SidebarInset>

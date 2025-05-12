@@ -139,7 +139,7 @@ const ChatRoom: React.FC<ChatRoomProps> = ({ roomId }) => {
   }
 
   return (
-    <div className="flex flex-col h-[calc(100vh-4rem)] ">
+    <div className="flex flex-col h-full">
       {!isOpen ? (
         <div className="flex flex-col justify-between h-full">
           {/* Header */}
