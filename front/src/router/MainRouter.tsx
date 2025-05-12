@@ -10,36 +10,39 @@ import ProtectAdminRoute from "./utils/ProtectAdminRoute";
 import ChatRoomPage from "@/pages/chatRoom/ChatRoomPage.tsx";
 import MainLayout from "@/components/MainLayout";
 import AccountPage from "@/pages/account/AccountPage";
+import { ThemeProvider } from "@/context/ThemeContext";
 
 function MainRouter() {
   return (
-    <AuthProvider>
-      <BrowserRouter>
-        <Routes>
-          {/* 🔹 Route protégée */}
-          <Route element={<PrivateRoute />}>
-            <Route element={<MainLayout />}>
-              <Route path="/" element={<App />} />
-              <Route path="/rooms/:id" element={<ChatRoomPage />} />
-              <Route path="/account" element={<AccountPage />} />
-              {/* 🔹 Route protégée admin*/}
-              <Route element={<ProtectAdminRoute />}>
-                <Route path="/admin" element={<Admin />} />
+    <ThemeProvider>
+      <AuthProvider>
+        <BrowserRouter>
+          <Routes>
+            {/* 🔹 Route protégée */}
+            <Route element={<PrivateRoute />}>
+              <Route element={<MainLayout />}>
+                <Route path="/" element={<App />} />
+                <Route path="/rooms/:id" element={<ChatRoomPage />} />
+                <Route path="/account" element={<AccountPage />} />
+                {/* 🔹 Route protégée admin*/}
+                <Route element={<ProtectAdminRoute />}>
+                  <Route path="/admin" element={<Admin />} />
+                </Route>
               </Route>
             </Route>
-          </Route>
 
-          {/* 🔹 Routes publiques (login, register) */}
-          <Route element={<PublicRoute />}>
-            <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<Register />} />
-          </Route>
+            {/* 🔹 Routes publiques (login, register) */}
+            <Route element={<PublicRoute />}>
+              <Route path="/login" element={<Login />} />
+              <Route path="/register" element={<Register />} />
+            </Route>
 
-          {/* 🔹 Redirection par défaut si l’URL est invalide */}
-          <Route path="*" element={<Navigate to="/" />} />
-        </Routes>
-      </BrowserRouter>
-    </AuthProvider>
+            {/* 🔹 Redirection par défaut si l’URL est invalide */}
+            <Route path="*" element={<Navigate to="/" />} />
+          </Routes>
+        </BrowserRouter>
+      </AuthProvider>
+    </ThemeProvider>
   );
 }
 

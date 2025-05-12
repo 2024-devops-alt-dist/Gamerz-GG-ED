@@ -112,7 +112,7 @@ const AccountSettingsPage = () => {
   return (
     <>
       <Toaster position="top-right" richColors />
-      <div className="sm:max-w-full min-w-min mx-auto w-[30%] h-full">
+      <div className="md:w-[30%] sm:w-full min-w-min mx-auto h-full">
         <div className="md:col-span-2 space-y-6">
           <div className="w-full">
             <h2 className="text-2xl font-bold">Account Settings</h2>

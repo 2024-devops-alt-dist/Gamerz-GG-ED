@@ -12,6 +12,7 @@ import {
 } from "@/components/ui/breadcrumb.tsx";
 import { Separator } from "@/components/ui/separator.tsx";
 import AppSidebarAdmin from "./sideBar/AppSidebarAdmin";
+import ToggleTheme from "./sideBar/ToggleTheme";
 
 function MainLayout() {
   const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -29,7 +30,7 @@ function MainLayout() {
           <AppSidebar isOpen={isOpen} setIsOpen={setIsOpen} />
         )}
         <SidebarInset>
-          <header className="flex h-16 shrink-0 items-center gap-2 border-b">
+          <header className="flex justify-between bg-sidebar h-16 shrink-0 items-center gap-2 border-b">
             <div className="flex items-center gap-2 px-3">
               <SidebarTrigger />
               <Separator
@@ -38,7 +39,7 @@ function MainLayout() {
               />
               <Breadcrumb>
                 <BreadcrumbList className="flex items-center gap-2">
-                  <BreadcrumbSeparator className="hidden md:block text-gray-400" />
+                  <BreadcrumbSeparator className="hidden md:block text-foreground" />
                   <BreadcrumbItem>
                     <BreadcrumbLink
                       href="/"
@@ -50,8 +51,9 @@ function MainLayout() {
                 </BreadcrumbList>
               </Breadcrumb>
             </div>
+            <ToggleTheme />
           </header>
-          <div className="flex flex-1 flex-col gap-4 min-h-[100vh] rounded-xl bg-muted/50 md:min-h-min">
+          <div className="flex flex-1 flex-col gap-4 min-h-[100vh] md:min-h-min">
             {!isOpen ? <Outlet /> : <ListRooms variant="" />}
           </div>
         </SidebarInset>
