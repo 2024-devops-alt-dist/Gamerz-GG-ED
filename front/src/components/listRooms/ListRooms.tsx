@@ -1,11 +1,11 @@
 import { useContext, useEffect, useState } from "react";
-import IRoom from "@/interfaces/IRoom";
 import RoomService from "@/services/roomService";
 
 import AuthContext from "@/context/AuthContext";
 import { columnRoomAdmin } from "@/components/dataTable/dataTableRooms/columns/ColumnRoomAdmin";
 import DataTableRoom from "@/components/dataTable/dataTableRooms/DataTableRoom";
 import { columnRoom } from "@/components/dataTable/dataTableRooms/columns/ColumnRoom";
+import { IRoom } from "@/interfaces/IRoom";
 
 interface ListRoomsProps {
   variant?: "admin" | "";
@@ -13,7 +13,7 @@ interface ListRoomsProps {
 
 function ListRooms({ variant = "admin" }: ListRoomsProps) {
   const [roomService] = useState(new RoomService());
-  const [rooms, setRooms] = useState<IRoom[] | []>([]);
+  const [rooms, setRooms] = useState<IRoom[]>();
   const [deleteSelections, setDeleteSelections] = useState({});
   const [joinSelections, setJoinSelections] = useState({});
   const authContext = useContext(AuthContext);
@@ -29,6 +29,7 @@ function ListRooms({ variant = "admin" }: ListRoomsProps) {
   async function getAllWithoutRoomsByUserId() {
     try {
       const userId = authContext?.user?._id;
+      if (!userId) return;
       const resp = await roomService.getWithoutByUserId(userId);
       setRooms(resp);
     } catch (error) {
@@ -66,7 +67,7 @@ function ListRooms({ variant = "admin" }: ListRoomsProps) {
           deleteSelections={deleteSelections}
           refresh={refresh}
           columns={columnsConfigAdmin}
-          data={rooms}
+          data={rooms ?? []}
         />
       ) : (
         <DataTableRoom
@@ -74,7 +75,7 @@ function ListRooms({ variant = "admin" }: ListRoomsProps) {
           setJoinSelections={setJoinSelections}
           refresh={refresh}
           columns={columnsConfig}
-          data={rooms}
+          data={rooms ?? []}
         />
       )}
     </div>

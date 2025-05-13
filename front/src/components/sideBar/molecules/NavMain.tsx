@@ -12,7 +12,7 @@ import { useContext, useEffect, useState } from "react";
 import RoomService from "@/services/roomService.ts";
 import { useNavigate } from "react-router-dom";
 import AuthContext from "@/context/AuthContext";
-import IRoom from "@/interfaces/IRoom";
+import { IRoom } from "@/interfaces/IRoom";
 
 export function NavMain() {
   const [rooms, setRooms] = useState<IRoom[]>([]);
@@ -23,6 +23,7 @@ export function NavMain() {
   const fetchRooms = async () => {
     try {
       const userId = authContext?.user?._id;
+      if (!userId) return;
       const result = await roomService.getByUserId(userId);
       console.log(result);
 

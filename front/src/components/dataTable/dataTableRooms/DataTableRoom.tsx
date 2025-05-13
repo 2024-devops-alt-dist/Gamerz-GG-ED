@@ -18,10 +18,11 @@ import RoomForm from "./RoomForm";
 import { useContext, useState } from "react";
 import DialogRoom from "@/components/dialog/DialogRoom";
 import AuthContext from "@/context/AuthContext";
+import { IRoom } from "@/interfaces/IRoom";
 
-interface DataTableRoomProps<TData, TValue> {
-  columns: ColumnDef<TData, TValue>[];
-  data: TData[];
+interface DataTableRoomProps {
+  columns: ColumnDef<IRoom, unknown>[];
+  data: IRoom[];
   refresh: () => void;
   deleteSelections?: Record<string, boolean>;
   setDeleteSelections?: React.Dispatch<
@@ -33,7 +34,7 @@ interface DataTableRoomProps<TData, TValue> {
     React.SetStateAction<Record<string, boolean>>
   >;
 }
-const DataTableRoom = <TData, TValue>({
+const DataTableRoom = ({
   data,
   columns,
   deleteSelections,
@@ -41,7 +42,7 @@ const DataTableRoom = <TData, TValue>({
   joinSelections,
   setJoinSelections,
   refresh,
-}: DataTableRoomProps<TData, TValue>) => {
+}: DataTableRoomProps) => {
   const [isOnpen, setIsOpen] = useState(false);
   const authContext = useContext(AuthContext);
   const table = useReactTable({
@@ -132,7 +133,7 @@ const DataTableRoom = <TData, TValue>({
               Object.keys(deleteSelections).length > 0 && (
                 <DialogRoom
                   type="destruct"
-                  rooms={getUsersFromSelection(deleteSelections)}
+                  rooms={getUsersFromSelection(deleteSelections) ?? []}
                   refresh={refresh}
                   setSelections={setDeleteSelections}
                 />
@@ -142,7 +143,7 @@ const DataTableRoom = <TData, TValue>({
               Object.keys(joinSelections).length > 0 && (
                 <DialogRoom
                   type="join"
-                  rooms={getUsersFromSelection(joinSelections)}
+                  rooms={getUsersFromSelection(joinSelections) ?? []}
                   refresh={refresh}
                   setSelections={setJoinSelections}
                 />
