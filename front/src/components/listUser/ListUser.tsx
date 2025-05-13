@@ -59,7 +59,7 @@ function ListUser({ type }: ListUserProps) {
     setDeleteSelections,
   });
   return (
-    <div className="container mx-auto py-10">
+    <div className="container px-6 py-10">
       <DataTableUsers
         setDeleteSelections={setDeleteSelections}
         deleteSelections={deleteSelections}

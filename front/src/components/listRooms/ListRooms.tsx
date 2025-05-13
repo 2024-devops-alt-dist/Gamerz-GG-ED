@@ -60,7 +60,7 @@ function ListRooms({ variant = "admin" }: ListRoomsProps) {
   });
 
   return (
-    <div className="container mx-auto py-10">
+    <div className="container px-6 py-10">
       {variant === "admin" ? (
         <DataTableRoom
           setDeleteSelections={setDeleteSelections}
