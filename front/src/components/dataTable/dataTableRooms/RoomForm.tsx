@@ -58,8 +58,8 @@ const RoomForm = ({ refresh, setIsOpen }: RoomFormProps) => {
   return (
     <>
       <Toaster position="top-right" richColors />
-      <Card className="p-10 w-[400px] mx-auto mt-20 shadow-lg bg-sidebar rounded-lg">
-        <CardHeader>
+      <Card className="w-full max-w-sm mx-auto p-6 sm:p-10 mt-20 shadow-lg bg-sidebar rounded-lg">
+      <CardHeader>
           <CardTitle className="text-2xl text-center font-semibold text-foreground dark:text-foreground-dark">
             Ajouter un salon
           </CardTitle>
