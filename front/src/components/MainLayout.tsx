@@ -27,7 +27,7 @@ function MainLayout() {
         {isAdminPage ? (
           <AppSidebarAdmin onSelectComponent={() => {}} />
         ) : (
-          <AppSidebar isOpen={isOpen} setIsOpen={setIsOpen} />
+          <AppSidebar setIsOpen={setIsOpen} />
         )}
         <SidebarInset>
           <header className="flex justify-between bg-sidebar h-16 shrink-0 items-center gap-2 border-b">
