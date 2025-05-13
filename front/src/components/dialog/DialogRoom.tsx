@@ -10,6 +10,7 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
+import { useRoomContext } from "@/context/RoomContext";
 import { IRoom } from "@/interfaces/IRoom";
 import RoomService from "@/services/roomService";
 import { useState } from "react";
@@ -27,7 +28,7 @@ const DialogRoom = ({
   setSelections,
 }: DialogRoomProps) => {
   const [roomService] = useState(new RoomService());
-  console.log(rooms);
+  const { refreshRooms } = useRoomContext();
 
   const onSubmit = () => {
     try {
@@ -40,12 +41,14 @@ const DialogRoom = ({
           console.log(resp);
           refresh();
           setSelections({});
+          refreshRooms();
         });
       } else {
         roomService.joinRooms(ids).then((resp) => {
           console.log(resp);
           refresh();
           setSelections({});
+          refreshRooms();
         });
       }
     } catch (error) {
