@@ -35,7 +35,7 @@ export function AppSidebar({ setIsOpen }: AppSidebarProps) {
   };
 
   useEffect(() => {
-    handleIsOpen();
+    setIsOpen(false);
   }, [location]);
 
   return (
