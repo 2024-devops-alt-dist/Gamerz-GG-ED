@@ -8,14 +8,24 @@ const adminRoutes = require("./routes/adminRoutes");
 const roomRoutes = require("./routes/roomRoutes");
 const messageRoutes = require("./routes/messageRoutes");
 
-const PORT_FRONT = process.env.PORT_FRONT;
 
 const app = express();
 
-// Middlewares
+const allowedOrigins = [
+    `http://localhost:${process.env.PORT_FRONT}`,
+    'https://gamerz-gg-ed.vercel.app'
+];
+
+// Middleware
 app.use(
     cors({
-        origin: `http://localhost:${PORT_FRONT}`,
+        origin: function (origin, callback) {
+            if (!origin || allowedOrigins.includes(origin)) {
+                callback(null, true);
+            } else {
+                callback(new Error(`CORS policy: Origin ${origin} not allowed`));
+            }
+        },
         credentials: true,
     })
 );
@@ -33,7 +43,7 @@ app.get("/test-db", async (req, res) => {
 });
 
 app.use((req, res) => {
-    res.status(404).json({ message: "❌ Route non trouvée" });
+    res.status(404).json({message: "❌ Route non trouvée"});
 });
 
 module.exports = app;
