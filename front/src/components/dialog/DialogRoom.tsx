@@ -10,7 +10,7 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
-import IRoom from "@/interfaces/IRoom";
+import { IRoom } from "@/interfaces/IRoom";
 import RoomService from "@/services/roomService";
 import { useState } from "react";
 
@@ -31,8 +31,10 @@ const DialogRoom = ({
 
   const onSubmit = () => {
     try {
-      const ids = rooms.map((room) => room._id);
-      if (!ids || ids.length === 0) return;
+      const ids: string[] = rooms
+        .map((room) => room._id)
+        .filter((id) => id !== undefined);
+
       if (type === "destruct") {
         roomService.deleteByIds(ids).then((resp) => {
           console.log(resp);

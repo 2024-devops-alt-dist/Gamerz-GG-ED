@@ -8,7 +8,7 @@ export default function ChatRoomPage() {
   const { user, loading } = useAuth();
 
   return (
-    <div className="p-6 bg-background dark:bg-background-dark min-h-screen text-foreground">
+    <div className="p-6 bg-background h-full overflow-hidden text-foreground">
       {loading && <div>Chargement utilisateur...</div>}
       {!loading && !user && <div>Vous devez être connecté</div>}
       {!loading && user && !roomId && <div>Salon introuvable</div>}

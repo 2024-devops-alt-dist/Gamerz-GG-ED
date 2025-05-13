@@ -1,7 +1,7 @@
-import IRoom from "@/interfaces/IRoom";
 import BaseService from "./baseService";
 import axios from "axios";
 import roomI from "@/interfaces/roomI";
+import { IRoom } from "@/interfaces/IRoom";
 class RoomService extends BaseService<IRoom> {
   constructor() {
     super("rooms/");

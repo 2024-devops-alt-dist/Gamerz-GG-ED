@@ -17,9 +17,10 @@ import { useState } from "react";
 import AdminService from "@/services/adminService";
 import { Button } from "@/components/ui/button";
 import DialogDestructUser from "../../dialog/DialogDestructUser";
-interface DataTableProps<TData, TValue> {
-  columns: ColumnDef<TData, TValue>[];
-  data: TData[];
+import userI from "@/interfaces/userI";
+interface DataTableProps {
+  columns: ColumnDef<userI, unknown>[];
+  data: userI[];
   refresh: () => void;
   setStatusSelections?: React.Dispatch<
     React.SetStateAction<Record<string, boolean>>
@@ -34,7 +35,7 @@ interface DataTableProps<TData, TValue> {
     React.SetStateAction<Record<string, boolean>>
   >;
 }
-const DataTableUsers = <TData, TValue>({
+const DataTableUsers = ({
   data,
   columns,
   refresh,
@@ -44,7 +45,7 @@ const DataTableUsers = <TData, TValue>({
   setBanedSelections,
   deleteSelections,
   setDeleteSelections,
-}: DataTableProps<TData, TValue>) => {
+}: DataTableProps) => {
   const [adminService] = useState(new AdminService());
 
   const table = useReactTable({
@@ -68,7 +69,9 @@ const DataTableUsers = <TData, TValue>({
         .filter((row) => statusSelections[row.id])
         .map((row) => row.original);
 
-      const ids = selectedUsers.map((user) => user._id);
+      const ids = selectedUsers
+        .map((user) => user._id)
+        .filter((u) => u !== undefined);
 
       if (ids.length === 0) return;
       try {
@@ -159,7 +162,7 @@ const DataTableUsers = <TData, TValue>({
               actionType={"ban"}
               setSelections={setBanedSelections}
               refresh={refresh}
-              users={getUsersFromSelection(banedSelections)}
+              users={getUsersFromSelection(banedSelections) ?? []}
             />
           )}
         {deleteSelections &&
@@ -169,7 +172,7 @@ const DataTableUsers = <TData, TValue>({
               actionType={"delete"}
               setSelections={setDeleteSelections}
               refresh={refresh}
-              users={getUsersFromSelection(deleteSelections)}
+              users={getUsersFromSelection(deleteSelections) ?? []}
             />
           )}
       </div>

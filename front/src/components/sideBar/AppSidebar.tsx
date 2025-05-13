@@ -17,19 +17,26 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { useLocation } from "react-router-dom";
+import { useEffect } from "react";
 
 interface AppSidebarProps {
-  setIsOpen?: (isOpen: boolean) => void;
-  isOpen?: boolean;
+  setIsOpen: (value: boolean | ((prev: boolean) => boolean)) => void;
 }
 
-export function AppSidebar({ setIsOpen, isOpen }: AppSidebarProps) {
+export function AppSidebar({ setIsOpen }: AppSidebarProps) {
   const { state } = useSidebar();
   const isCollapsed = state === "collapsed";
 
+  const location = useLocation();
+
   const handleIsOpen = () => {
-    setIsOpen?.(!isOpen);
+    setIsOpen((prev: boolean) => !prev);
   };
+
+  useEffect(() => {
+    setIsOpen(false);
+  }, [location]);
 
   return (
     <Sidebar collapsible="icon">
