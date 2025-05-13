@@ -115,15 +115,15 @@ const ChatRoom: React.FC<ChatRoomProps> = ({ roomId }) => {
   }
 
   if (authLoading || loading) {
-    return <div className="text-gray-100 p-6">🔄 Chargement du salon...</div>;
+    return <div className="text-forgeten p-6">🔄 Chargement du salon...</div>;
   }
 
   if (!userId) {
-    return <div className="text-gray-100 p-6">🔐 Vous devez être connecté</div>;
+    return <div className="text-forgeten p-6">🔐 Vous devez être connecté</div>;
   }
 
   if (!room) {
-    return <div className="text-gray-100 p-6">❌ Salon introuvable</div>;
+    return <div className="text-forgeten p-6">❌ Salon introuvable</div>;
   }
 
   function handleSend() {

@@ -50,10 +50,10 @@ export function AppSidebar({ setIsOpen }: AppSidebarProps) {
             <TooltipTrigger asChild>
               <div
                 onClick={handleIsOpen}
-                className="flex items-center gap-2 p-2 rounded-md hover:bg-muted transition-colors cursor-pointer w-full"
+                className="flex items-center gap-2 rounded-md hover:bg-muted transition-colors cursor-pointer w-full"
               >
-                <div className="flex items-center justify-center w-8 h-8 rounded-full bg-muted">
-                  <MessageCirclePlus className="w-4 h-4" />
+                <div className="flex items-center justify-center w-9 h-9 rounded-full">
+                  <MessageCirclePlus className="" />
                 </div>
                 {!isCollapsed && (
                   <span className="whitespace-nowrap">Rejoindre un Salon</span>
