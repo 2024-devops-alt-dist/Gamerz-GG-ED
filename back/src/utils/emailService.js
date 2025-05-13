@@ -2,25 +2,25 @@ require("dotenv").config();
 const nodemailer = require("nodemailer");
 
 const emailTransporter = nodemailer.createTransport({
-  host: process.env.EMAIL_HOST,
-  port: process.env.EMAIL_PORT,
-  secure: false,
-  auth: {
-    user: process.env.EMAIL_USER,
-    pass: process.env.EMAIL_PASS,
-  },
-  tls: {
-    rejectUnauthorized: false,
-  },
+    host: process.env.EMAIL_HOST,
+    port: process.env.EMAIL_PORT,
+    secure: false,
+    auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS,
+    },
+    tls: {
+        rejectUnauthorized: false,
+    },
 });
 
 exports.sendValidationEmail = async (email, username) => {
-  try {
-    const mailOptions = {
-      from: `"Support Gamerz" <no-reply@gamerz.com>`,
-      to: email,
-      subject: "🎮 Votre compte a été approuvé ✅",
-      text: `🎉🔥 YOLOOO ${username} ! 🔥🎉
+    try {
+        const mailOptions = {
+            from: `"Support Gamerz" <${process.env.EMAIL_USER}>`,
+            to: email,
+            subject: "🎮 Votre compte a été approuvé ✅",
+            text: `🎉🔥 YOLOOO ${username} ! 🔥🎉
 
                 🚀 ALERTE GAMING ULTIME ! 🚀
 
@@ -39,7 +39,7 @@ exports.sendValidationEmail = async (email, username) => {
                 L’équipe Gamerz ⚡👾  
                 
                 PS : 🐱 La Bise au Chat (et aux gamers !) 🎮🐾`,
-      html: `
+            html: `
                 <div style="font-family: Arial, sans-serif; background-color: #1e1e1e; color: #ffffff; padding: 20px; text-align: center;">
                 <div style="max-width: 600px; margin: auto; background-color: #2a2a2a; padding: 20px; border-radius: 10px; box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);">
                 <h1 style="color: #ff6600; font-size: 28px; margin-bottom: 10px;">🎉🔥 YOLOOO ${username} ! 🔥🎉</h1>
@@ -73,28 +73,28 @@ exports.sendValidationEmail = async (email, username) => {
                 </p>
                 </div>
                 </div>`,
-    };
+        };
 
-    await emailTransporter.sendMail(mailOptions);
-    console.log(` Email capturé par Mailtrap pour ${email}`);
-  } catch (error) {
-    console.error("❌ Erreur lors de l'envoi de l'email :", error);
-  }
+        await emailTransporter.sendMail(mailOptions);
+        console.log(`✅ Email de validation envoyé à ${email}`);
+    } catch (error) {
+        console.error("❌ Erreur lors de l'envoi de l'email :", error);
+    }
 };
 
 exports.sendAdminNotificationOnRegister = async (userEmail, username) => {
-  try {
-    const mailOptions = {
-      from: `"Gamerz Alert" <no-reply@gamerz.com>`,
-      to: "admin@gamerz.com",
-      subject: `🆕 Nouvel utilisateur en attente : ${username}`,
-      text: `Un nouvel utilisateur s'est inscrit sur Gamerz !
+    try {
+        const mailOptions = {
+            from: `"Gamerz Alert" <${process.env.EMAIL_USER}>`,
+            to: process.env.EMAIL_USER,
+            subject: `🆕 Nouvel utilisateur en attente : ${username}`,
+            text: `Un nouvel utilisateur s'est inscrit sur Gamerz !
 
 Nom d'utilisateur : ${username}
 Email : ${userEmail}
 
 Connecte-toi pour le valider.`,
-      html: `
+            html: `
                 <div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #0f0f0f; color: #ffffff; padding: 30px;">
                     <div style="max-width: 600px; margin: auto; background-color: #1a1a1a; border-radius: 12px; padding: 25px; box-shadow: 0 0 20px #ff6600;">
                         <h1 style="color: #ff6600; text-align: center; font-size: 28px;">⚠️ ALERTE GAMING MAXIMALE ⚠️</h1>
@@ -121,11 +121,10 @@ Connecte-toi pour le valider.`,
                     </div>
                 </div>
             `,
-    };
-
-    await emailTransporter.sendMail(mailOptions);
-    console.log(`📧 Alerte admin envoyée pour ${userEmail}`);
-  } catch (error) {
-    console.error("❌ Erreur lors de l'envoi de l'alerte admin :", error);
-  }
+        };
+        await emailTransporter.sendMail(mailOptions);
+        console.log(`📧 Alerte admin envoyée pour ${userEmail}`);
+    } catch (error) {
+        console.error("❌ Erreur lors de l'envoi de l'alerte admin :", error);
+    }
 };
