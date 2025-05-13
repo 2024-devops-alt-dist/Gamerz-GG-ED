@@ -11,7 +11,7 @@ interface ListUserProps {
   variant?: "defaut" | "";
 }
 
-function ListUser({ type, variant = "defaut" }: ListUserProps) {
+function ListUser({ type }: ListUserProps) {
   const [userService] = useState(new UserService());
   const [users, setUsers] = useState<userI[] | null>([]);
   const [usersPending, setUsersPending] = useState<userI[] | null>([]);

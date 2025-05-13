@@ -2,7 +2,7 @@
 import { ColumnDef, Row } from "@tanstack/react-table";
 import { Checkbox } from "@/components/ui/checkbox";
 import { CheckedState } from "@radix-ui/react-checkbox";
-import IRoom from "@/interfaces/IRoom";
+import { IRoom } from "@/interfaces/IRoom";
 type columnRoomProps = {
   joinSelections: Record<string, boolean>;
   setJoinSelections: React.Dispatch<

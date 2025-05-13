@@ -29,7 +29,7 @@ const DialogDestructUser = ({
   const [adminService] = useState(new AdminService());
 
   const onSubmit = () => {
-    const ids = users.map((user) => user._id);
+    const ids = users.map((user) => user._id).filter((u) => u !== undefined);
     try {
       if (actionType === "ban") {
         adminService.banned(ids).then(() => {
