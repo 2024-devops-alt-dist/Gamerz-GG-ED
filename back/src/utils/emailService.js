@@ -97,12 +97,10 @@ Connecte-toi pour le valider.`,
   <div style="font-family: Arial, sans-serif; background-color: #121212; padding: 0; margin: 0;">
     <div style="max-width: 600px; margin: auto; background-color: #1e1e1e; border-radius: 12px; overflow: hidden; box-shadow: 0 0 20px rgba(255,102,0,0.3);">
       
-      <!-- Header -->
       <div style="background-color: #ff6600; padding: 20px; text-align: center;">
         <h1 style="color: #fff; font-size: 26px; margin: 0;">⚠️ Nouvelle Inscription Gamerz</h1>
       </div>
 
-      <!-- Content -->
       <div style="padding: 30px; color: #f0f0f0;">
         <h2 style="font-size: 22px; margin-bottom: 10px;">🎮 Un nouveau challenger approche !</h2>
 
